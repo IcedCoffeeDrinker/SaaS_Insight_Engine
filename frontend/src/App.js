@@ -50,7 +50,11 @@ function App() {
           </p>
         </div>
 
-        <DataTable data={previewData} hasAccess={hasAccess} />
+        <DataTable 
+          data={previewData} 
+          hasAccess={hasAccess} 
+          onGetAccess={() => setShowPaymentModal(true)} 
+        />
 
         {showPaymentModal && (
           <Elements stripe={stripePromise}>
