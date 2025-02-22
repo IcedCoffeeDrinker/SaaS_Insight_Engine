@@ -32,7 +32,7 @@ def get_preview_data():
         lines = f.readlines()
         header = lines[0].strip().split(',')
         preview_data = []
-        for line in lines[1:6]:  # Get first 5 entries
+        for line in lines[1:9]:  # Get first 8 entries
             values = line.strip().split(',')
             preview_data.append(dict(zip(header, values)))
     return jsonify(preview_data)
