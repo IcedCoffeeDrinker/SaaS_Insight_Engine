@@ -169,3 +169,17 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Node
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# IDEs
+.vscode/
+.idea/
+
+# Data
+data/csv/*
+!data/csv/.gitkeep

@@ -1,0 +1,22 @@
+## RUN ##
+
+# Create virtual environment
+python -m venv venv
+
+# Activate it (Windows)
+venv\Scripts\activate
+
+# Activate it (Unix/MacOS)
+source venv/bin/activate # for fish shell add '.fish'
+
+# Install dependencies
+pip install -r requirements.txt
+
+
+## KILL ##
+
+# Deactivate virtual environment
+deactivate
+
+# Delete virtual environment
+rm -rf venv

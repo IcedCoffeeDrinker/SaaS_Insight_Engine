@@ -1,0 +1,58 @@
+### File Structure ###
+
+
+## MVP ##
+
+SaaS_Insight_Engine/
+├── .env                   # API tokens
+├── .gitignore             
+├── backend/
+│   ├── app.py            # All Flask routes and logic
+│   └── requirements.txt  # Python-specific dependencies
+├── frontend/
+│   ├── package.json
+│   ├── public/
+│   └── src/
+│       ├── components/   # React components
+│       └── App.js        # Main React app
+└── README.md             
+└── data/                 
+    └── csv/              # CSV files
+
+
+## Future (Potentially) ##
+
+SaaS_Insight_Engine/
+├── .env                   
+├── .gitignore             
+├── README.md              
+├── requirements.txt       # Python dependencies
+├── config/
+│   └── config.py          # Configuration loader
+├── backend/
+│   ├── __init__.py
+│   ├── app.py            # Flask application entry point
+│   ├── models/           # Database models
+│   │   └── __init__.py
+│   ├── services/         # Business logic
+│   │   ├── __init__.py
+│   │   ├── reddit_service.py
+│   │   ├── openai_service.py
+│   │   └── analytics_service.py
+│   ├── utils/            # Helper functions
+│   │   ├── __init__.py
+│   │   └── api_utils.py
+│   └── api/              # API routes
+│       ├── __init__.py
+│       └── routes.py
+├── frontend/
+│   ├── package.json
+│   ├── public/
+│   └── src/
+│       ├── components/
+│       ├── pages/
+│       ├── services/
+│       └── App.js
+└── data/                 
+    └── csv/             # Generated CSV files
+
