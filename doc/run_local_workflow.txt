@@ -1,3 +1,26 @@
+## STACK ##
+
+# Backend
+- Python 3.11+
+- Flask (Web framework)
+- Stripe (Payment processing)
+
+# Frontend
+- Node.js 18+ and npm
+- React 18
+- Tailwind CSS (Styling)
+- Stripe.js (Payment integration)
+
+## PREREQUISITES ##
+
+# Install Python 3.11 or higher
+# Download from: https://www.python.org/downloads/
+
+# Install Node.js 18 or higher and npm
+# Download from: https://nodejs.org/
+
+########################################################
+
 ## RUN ##
 
 # Create virtual environment
@@ -9,8 +32,48 @@ venv\Scripts\activate
 # Activate it (Unix/MacOS)
 source venv/bin/activate # for fish shell add '.fish'
 
+# Navigate to backend directory
+cd backend
+
 # Install dependencies
 pip install -r requirements.txt
+
+# Install additional backend dependencies
+pip install flask flask-cors stripe python-dotenv
+
+## Frontend Setup ##
+
+# Navigate to frontend directory
+cd ..
+cd frontend
+
+# Initialize Node project (if package.json doesn't exist)
+npm init -y
+
+# Install Node dependencies
+npm install
+npm install react react-dom @stripe/stripe-js @stripe/react-stripe-js tailwindcss postcss autoprefixer react-scripts
+
+# Return to root directory
+cd ..
+
+## Start Applications ##
+
+# Terminal 1 - Start Backend (from project root)
+cd backend
+flask run
+
+# Terminal 2 - Start Frontend (from project root)
+cd frontend
+npm start
+
+## Testing ##
+
+# Stripe test card
+Card number: 4242 4242 4242 4242
+Expiry: Any future date
+CVC: Any 3 digits
+ZIP: Any 5 digits
 
 
 ## KILL ##
@@ -20,3 +83,46 @@ deactivate
 
 # Delete virtual environment
 rm -rf venv
+
+# Clean frontend build
+cd frontend
+rm -rf node_modules package-lock.json
+cd ..
+
+# Kill running processes
+# Windows: Ctrl+C in each terminal
+# Unix/MacOS: Ctrl+C in each terminal
+
+########################################################
+
+## Troubleshooting ##
+
+# If CORS errors occur:
+# - Check that backend is running on http://localhost:5000
+# - Check that frontend is running on http://localhost:3000
+
+# If Stripe doesn't work:
+# - Verify .env files exist in both root and frontend directories
+# - Check that Stripe keys are correctly set
+
+# If Tailwind styles don't appear:
+# - Restart frontend development server
+# - Verify tailwind.config.js and postcss.config.js exist
+
+# If 'python' command not found:
+# - Make sure Python is added to your PATH
+# - Try using 'python3' instead
+
+# If 'npm' command not found:
+# - Make sure Node.js is added to your PATH
+# - Try restarting your terminal
+
+# If port 3000 is already in use:
+# Windows: netstat -ano | findstr :3000
+# Unix/MacOS: lsof -i :3000
+# Then kill the process using that port
+
+# If npm start fails with dependency errors:
+# - Try clean install:
+#   rm -rf node_modules package-lock.json
+#   npm install
