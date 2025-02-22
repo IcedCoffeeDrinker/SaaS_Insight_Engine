@@ -180,6 +180,4 @@ yarn-error.log
 .vscode/
 .idea/
 
-# Data
-data/csv/*
-!data/csv/.gitkeep
+
