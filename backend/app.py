@@ -4,6 +4,7 @@ import os
 import stripe
 from flask_cors import CORS
 from dotenv import load_dotenv
+import csv
 
 # Load environment variables
 load_dotenv()
@@ -29,19 +30,15 @@ def save_users(users):
 @app.route('/api/preview-data')
 def get_preview_data():
     with open('../data/SaaS_Niche_opportunities_Example.csv', 'r') as f:
-        lines = f.readlines()
-        header = lines[0].strip().split(',')
-        preview_data = []
-        for line in lines[1:9]:  # Get first 8 entries
-            values = line.strip().split(',')
-            preview_data.append(dict(zip(header, values)))
+        csv_reader = csv.DictReader(f)
+        preview_data = list(csv_reader)[:8]  # Get first 8 entries
     return jsonify(preview_data)
 
 @app.route('/api/create-payment-intent', methods=['POST'])
 def create_payment():
     try:
         payment_intent = stripe.PaymentIntent.create(
-            amount=300,  # $3.00
+            amount=3000,  # $30.00
             currency='usd'
         )
         return jsonify({

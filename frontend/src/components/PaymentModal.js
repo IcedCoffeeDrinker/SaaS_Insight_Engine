@@ -19,6 +19,7 @@ function PaymentModal({ onClose, onSuccess }) {
         headers: {
           'Content-Type': 'application/json',
         },
+        body: JSON.stringify({ amount: 3000 }),
       });
       
       const { clientSecret } = await response.json();
@@ -57,6 +58,11 @@ function PaymentModal({ onClose, onSuccess }) {
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
       <div className="bg-white p-8 rounded-lg max-w-md w-full">
         <h2 className="text-2xl font-bold mb-4">Get Lifetime Access</h2>
+        <div className="text-center mb-6">
+          <h2 className="text-2xl font-bold mb-2">
+            Complete $30 Payment
+          </h2>
+        </div>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block text-gray-700 mb-2">Email</label>
@@ -104,7 +110,7 @@ function PaymentModal({ onClose, onSuccess }) {
               disabled={loading}
               className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
             >
-              {loading ? 'Processing...' : 'Pay $3'}
+              {loading ? 'Processing...' : 'Pay $30'}
             </button>
           </div>
         </form>
