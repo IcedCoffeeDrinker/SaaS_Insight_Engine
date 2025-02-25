@@ -29,7 +29,7 @@ def save_users(users):
 # Routes
 @app.route('/api/preview-data')
 def get_preview_data():
-    with open('../data/SaaS_Niche_opportunities_Example.csv', 'r') as f:
+    with open('../data/csv/SaaS_Niche_opportunities_Example.csv', 'r') as f:
         csv_reader = csv.DictReader(f)
         preview_data = list(csv_reader)[:8]  # Get first 8 entries
     return jsonify(preview_data)
