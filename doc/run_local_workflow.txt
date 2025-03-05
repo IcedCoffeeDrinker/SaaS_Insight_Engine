@@ -38,9 +38,6 @@ cd backend
 # Install dependencies
 pip install -r requirements.txt
 
-# Install additional backend dependencies
-pip install flask flask-cors stripe python-dotenv
-
 ## Frontend Setup ##
 
 # Navigate to frontend directory
