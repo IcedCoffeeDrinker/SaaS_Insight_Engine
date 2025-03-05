@@ -17,19 +17,22 @@ stripe.api_key = os.getenv('STRIPE_SECRET_KEY')
 
 # Helper functions
 def load_users():
-    if os.path.exists('data/users.json'):
-        with open('data/users.json', 'r') as f:
+    file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data', 'users.json')
+    if os.path.exists(file_path):
+        with open(file_path, 'r') as f:
             return json.load(f)
     return {"users": []}
 
 def save_users(users):
-    with open('data/users.json', 'w') as f:
+    file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data', 'users.json')
+    with open(file_path, 'w') as f:
         json.dump(users, f)
 
 # Routes
 @app.route('/api/preview-data')
 def get_preview_data():
-    with open('../data/csv/SaaS_Niche_opportunities_Example.csv', 'r') as f:
+    file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data', 'csv', 'SaaS_Niche_opportunities_Example.csv')
+    with open(file_path, 'r') as f:
         csv_reader = csv.DictReader(f)
         preview_data = list(csv_reader)[:8]  # Get first 8 entries
     return jsonify(preview_data)
