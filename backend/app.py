@@ -31,7 +31,7 @@ def save_users(users):
 # Routes
 @app.route('/api/preview-data')
 def get_preview_data():
-    file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data', 'csv', 'SaaS_Niche_opportunities_Example.csv')
+    file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data', 'csv', 'SaaS_Niche_opportunities.csv')
     with open(file_path, 'r') as f:
         csv_reader = csv.DictReader(f)
         preview_data = list(csv_reader)[:8]  # Get first 8 entries

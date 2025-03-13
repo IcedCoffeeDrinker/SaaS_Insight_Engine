@@ -1,7 +1,6 @@
 import os
 from dotenv import load_dotenv
 from google.ads.googleads.client import GoogleAdsClient
-import csv
 
 # Load environment variables from .env file
 load_dotenv()
@@ -17,8 +16,29 @@ client = GoogleAdsClient.load_from_dict({
     'json_key_file_path': CREDENTIALS_FILE_PATH
 })
 
+def approximate_revenue(average_searches, competition, CR=0.01, B=50, alpha=1.0, k=1000, beta=0.2):
+    '''
+    Parameters:
+        average_searches: Average monthly keyword searches (S).
+        competition: Market competition on a scale from 0 (low) to 100 (high).
+        CR: Conversion rate from a searcher to a paying customer (default 0.01, i.e., 1%).
+        B: Baseline price per customer in dollars (default $50).
+        alpha: Demand sensitivity factor (default 1.0).
+        k: Saturation constant for demand (default 1000).
+        beta: Competition sensitivity factor (default 0.2).
+    '''
+    # Calculate the number of paying customers
+    paying_customers = average_searches * CR
+    
+    # Calculate the adaptive price per customer
+    price = B * (1 + alpha * (average_searches / (average_searches + k))) * (1 - beta * (competition / 100))
+    
+    # Calculate the total estimated monthly revenue
+    revenue = paying_customers * price
+    return revenue
+
 def get_google_metrics(keywords):
-    return [20000, "Low"] # for testing, since I don't have a real API key
+    return [20000, "Low", 40000] # for testing, since I don't have a real API key
     googleads_service = client.get_service("GoogleAdsService")
     keyword_plan_idea_service = client.get_service("KeywordPlanIdeaService")
 
@@ -58,8 +78,9 @@ def get_google_metrics(keywords):
 
     # Map competition value to a human-readable format
     competition_level = map_competition(avg_competition)
+    revenue = approximate_revenue(avg_searches, avg_competition)
 
-    return [avg_searches, competition_level]  # Return a list of results
+    return [avg_searches, competition_level, revenue]  # Return a list of results
 
 def map_competition(competition_value):
     """Map competition value (0-100) to human-readable format."""
@@ -73,15 +94,6 @@ def map_competition(competition_value):
         return "High"
     else:
         return "Very High"
-
-def read_keywords_from_csv(file_path):
-    """Read keywords from a CSV file."""
-    keywords = []
-    with open(file_path, mode='r') as file:
-        reader = csv.reader(file)
-        for row in reader:
-            keywords.append(row[0])  # Assuming keywords are in the first column
-    return keywords
 
 # Example usage
 if __name__ == "__main__":

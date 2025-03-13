@@ -107,9 +107,10 @@ def add_keyword_stats(new_ideas):
             metrics = google_ads_metrics.get_google_metrics(idea['keywords'])  # returns [avg_monthly_searches, competition_level]
             
             # Add the metrics to the idea dictionary
-            avg_monthly_searches, competition_level = metrics
+            avg_monthly_searches, competition_level, revenue = metrics
             idea['avg_monthly_searches'] = avg_monthly_searches
             idea['competition_level'] = competition_level
+            idea['revenue'] = revenue
     
     return new_ideas
     
