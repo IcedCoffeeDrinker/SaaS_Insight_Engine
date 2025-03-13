@@ -244,4 +244,10 @@ coverage.xml
 # Frontend testing
 frontend/coverage/
 
+# Google credentials
+backend/google_ads_credentials.json
+google_ads_credentials.json
+*-bdb79dbcff29.json
+jupyter-391421-*.json
+
 
