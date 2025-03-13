@@ -54,5 +54,82 @@
     {
         "product_title": "Curated Product Search Engine",
         "description": "A new-generation search engine that prioritizes the relevance and usefulness of products over marketing tactics. This platform allows users to discover genuinely useful products through a curated directory where editors review and recommend items, ensuring quality over promotional content. It seeks to restore trust in online shopping experiences by highlighting products that meet actual user needs."
+    },
+    {
+        "product_title": "GTM Strategy Optimizer",
+        "description": "GTM Strategy Optimizer is a SaaS platform designed to help tech startups and businesses implement effective Go-To-Market strategies. By leveraging AI algorithms, the tool analyzes various market conditions, buyer psychology, and industry trends to create tailored marketing strategies for different segments. It includes features like pricing models, product-market fit analysis, and sales funnel optimization, ensuring that businesses can effectively transition from product development to revenue generation.",
+        "keywords": [
+            "GTM strategy",
+            "sales funnel optimization",
+            "market analysis"
+        ],
+        "avg_monthly_searches": 20000,
+        "competition_level": "Low"
+    },
+    {
+        "product_title": "Influencer Engagement Hub",
+        "description": "Influencer Engagement Hub is a platform that connects brands with social media influencers for targeted campaigns. It enables businesses to create custom marketing strategies by pairing with relevant influencers who promote products in an authentic way. The hub also offers analytics tools to track campaign success and optimize future collaborations, aiming to boost brand awareness and sales through genuine influencer endorsements.",
+        "keywords": [
+            "influencer marketing",
+            "brand awareness",
+            "campaign analytics"
+        ],
+        "avg_monthly_searches": 20000,
+        "competition_level": "Low"
+    },
+    {
+        "product_title": "Retirement Portfolio Insight Tool",
+        "description": "Retirement Portfolio Insight Tool provides users with deep insights into their retirement accounts, highlighting the implications of stock performance, particularly for heavily invested companies like Tesla. The platform aggregates data and offers recommendations on diversifying portfolios to manage risk, enhance returns, and ensure a secure retirement, especially in volatile market conditions.",
+        "keywords": [
+            "retirement planning",
+            "portfolio management",
+            "investment insights"
+        ],
+        "avg_monthly_searches": 20000,
+        "competition_level": "Low"
+    },
+    {
+        "product_title": "Entrepreneurship Support Network",
+        "description": "Entrepreneurship Support Network is a collaborative platform aimed at aspiring entrepreneurs, particularly young individuals. It offers resources, mentorship, and networking opportunities to help users navigate their entrepreneurial journeys. The platform includes a community forum, access to educational tools, and connections to investors, nurturing the spirit of entrepreneurship and reducing barriers to entry.",
+        "keywords": [
+            "entrepreneurship",
+            "mentorship",
+            "startup resources"
+        ],
+        "avg_monthly_searches": 20000,
+        "competition_level": "Low"
+    },
+    {
+        "product_title": "Valuation Transparency Tool",
+        "description": "A financial analysis platform designed to provide transparency into the valuation of companies by breaking down asset-backed value versus market hype. Targeted at investors, analysts, and financial professionals, this tool offers real-time data on companies' asset values, profitability metrics, and market sentiment, helping users make informed investment decisions.",
+        "keywords": [
+            "financial analysis",
+            "company valuation",
+            "asset transparency"
+        ],
+        "avg_monthly_searches": 20000,
+        "competition_level": "Low"
+    },
+    {
+        "product_title": "Automated Valuation Correction Alerts",
+        "description": "This service monitors equity markets and alerts investors when stocks deviate significantly from their perceived value based on fundamental metrics. It aggregates data from various sources and employs machine learning to project potential corrections, enabling users to react quickly and strategically amidst market fluctuations.",
+        "keywords": [
+            "stock alerts",
+            "market correction",
+            "investment strategy"
+        ],
+        "avg_monthly_searches": 20000,
+        "competition_level": "Low"
+    },
+    {
+        "product_title": "EV Market Competitor Insight Platform",
+        "description": "A SaaS tool that provides detailed insights into the electric vehicle market, focusing on technology advancements and competitor analysis. Useful for automotive industry stakeholders and investors, the platform delivers real-time updates on trends, company performance, and market positioning, revealing how companies like Tesla compare with emerging competitors.",
+        "keywords": [
+            "EV market analysis",
+            "competitor insights",
+            "automotive trends"
+        ],
+        "avg_monthly_searches": 20000,
+        "competition_level": "Low"
     }
 ]

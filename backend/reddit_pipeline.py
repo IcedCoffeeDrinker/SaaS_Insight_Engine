@@ -5,6 +5,7 @@ import time
 from openai import OpenAI
 import threading
 import json
+import google_ads_metrics
 
 # settings
 COMMENTS_PER_OPENAI_REQUEST = 10
@@ -47,7 +48,7 @@ def process_comment(comment):
     # Check if the comment meets the minimum word count
     if len(comment_body.split()) >= MIN_WORD_COUNT:
         while generation_cooldown:
-            sleep(2)
+            time.sleep(2)
         comments += comment_body + '\n\n'
         comment_counter += 1
 
@@ -84,8 +85,36 @@ def fetch_new_comments():
         thread.start()
         threads.append(thread)
 
+def add_keyword_stats(new_ideas):
+    """
+    Extract keywords from each idea and convert them to a Python list.
+    This function processes the 'keywords' field from each idea in the new_ideas list.
+    Returns the updated new_ideas with keywords converted to lists.
+    """
+    for idea in new_ideas:
+        if 'keywords' in idea and isinstance(idea['keywords'], str):
+            # Convert comma-separated string to list
+            keywords_str = idea['keywords']
+            # Split by comma and strip whitespace
+            keywords_list = [keyword.strip() for keyword in keywords_str.split(',')]
+            # Update the idea with the list of keywords
+            idea['keywords'] = keywords_list
+    
+    # Process each idea individually to get metrics for its specific keywords
+    for idea in new_ideas:
+        if 'keywords' in idea and idea['keywords']:
+            # Get metrics for this specific idea's keywords
+            metrics = google_ads_metrics.get_google_metrics(idea['keywords'])  # returns [avg_monthly_searches, competition_level]
+            
+            # Add the metrics to the idea dictionary
+            avg_monthly_searches, competition_level = metrics
+            idea['avg_monthly_searches'] = avg_monthly_searches
+            idea['competition_level'] = competition_level
+    
+    return new_ideas
+    
 def get_SaaS_ideas(comments):
-    new_ideas = gpt_request(comments)
+    new_ideas = add_keyword_stats(gpt_request(comments))
     append_to_ideas_file(new_ideas)
     print("New ideas created and appended to file\n\n")
 
@@ -96,11 +125,12 @@ def gpt_request(comments):
             {"role": "system", "content": """You are an AI specialized in generating thoughtful 
             and creative SaaS product ideas based on provided reddit posts. When you receive a set 
             of reddit posts, analyze the feedback, challenges, and ideas presented, and generate a 
-            JSON array of product ideas. Each product idea must be an object with exactly two keys: 
-            'product_title' and 'description'.\n\n- 'product_title': A concise, descriptive title for 
+            JSON array of product ideas. Each product idea must be an object with exactly three keys: 
+            'product_title', 'description', and 'keywords'.\n\n- 'product_title': A concise, descriptive title for 
             a SaaS product that addresses a specific need or insight from the reddit posts.\n- 'description': 
             A brief yet detailed explanation of the product, outlining its purpose, target audience, and 
-            how it solves the identified problem.\n\nEnsure that your output is strictly valid JSON with 
+            how it solves the identified problem.\n- 'keywords': A list of three keywords that the target 
+            audience would search for.\n\nEnsure that your output is strictly valid JSON with 
             no additional text, markdown formatting, or commentary. If you are unsure or cannot derive any 
             product ideas, output an empty JSON array (i.e., []).\n\nFocus on creativity and depth in your ideas, 
             closely aligning them with the themes and content of the provided reddit posts."""},
