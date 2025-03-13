@@ -19,7 +19,12 @@ function App() {
   }, []);
 
   const fetchPreviewData = async () => {
-    const response = await fetch('http://localhost:5000/api/preview-data');
+    const email = localStorage.getItem('userEmail');
+    const url = email 
+      ? `http://localhost:5000/api/preview-data?email=${encodeURIComponent(email)}`
+      : 'http://localhost:5000/api/preview-data';
+      
+    const response = await fetch(url);
     const data = await response.json();
     setPreviewData(data);
   };
@@ -52,6 +57,9 @@ function App() {
       localStorage.setItem('userEmail', email);
       setHasAccess(true);
       setShowRestoreModal(false);
+      
+      // Refresh the data after successful restoration
+      fetchPreviewData();
     }
   };
 
@@ -83,6 +91,7 @@ function App() {
               onSuccess={() => {
                 setHasAccess(true);
                 setShowPaymentModal(false);
+                fetchPreviewData();
               }}
             />
           </Elements>

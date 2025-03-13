@@ -45,6 +45,10 @@ function PaymentModal({ onClose, onSuccess }) {
         });
         
         localStorage.setItem('userEmail', email);
+        
+        // Fetch the updated data before calling onSuccess
+        await fetchFullData(email);
+        
         onSuccess();
       }
     } catch (err) {
@@ -52,6 +56,12 @@ function PaymentModal({ onClose, onSuccess }) {
     }
     
     setLoading(false);
+  };
+
+  // Function to fetch the full data after payment
+  const fetchFullData = async (email) => {
+    const url = `http://localhost:5000/api/preview-data?email=${encodeURIComponent(email)}`;
+    await fetch(url);
   };
 
   return (

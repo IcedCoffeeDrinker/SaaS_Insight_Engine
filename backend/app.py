@@ -32,10 +32,24 @@ def save_users(users):
 @app.route('/api/preview-data')
 def get_preview_data():
     file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data', 'csv', 'SaaS_Niche_opportunities.csv')
+    
+    # Check if user has access
+    email = request.args.get('email')
+    has_access = False
+    
+    if email:
+        users = load_users()
+        has_access = email in [user['email'] for user in users['users']]
+    
     with open(file_path, 'r') as f:
         csv_reader = csv.DictReader(f)
-        preview_data = list(csv_reader)[:8]  # Get first 8 entries
-    return jsonify(preview_data)
+        data = list(csv_reader)
+        
+        # If user has access, return all data
+        if has_access:
+            return jsonify(data)
+        # Otherwise return only preview data
+        return jsonify(data[:8])  # Get first 8 entries
 
 @app.route('/api/create-payment-intent', methods=['POST'])
 def create_payment():
