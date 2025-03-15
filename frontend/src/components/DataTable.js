@@ -1,6 +1,59 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 function DataTable({ data, hasAccess, onGetAccess }) {
+  const [descriptions, setDescriptions] = useState({});
+  const [hoveredRow, setHoveredRow] = useState(null);
+  const [jsonData, setJsonData] = useState([]);
+  const hoverTimeoutRef = useRef(null);
+
+  // Fetch the JSON data when component mounts
+  useEffect(() => {
+    const fetchJsonData = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/saas-ideas');
+        const data = await response.json();
+        setJsonData(data);
+      } catch (error) {
+        console.error('Error fetching JSON data:', error);
+      }
+    };
+
+    fetchJsonData();
+  }, []);
+
+  // Handle mouse enter with delay
+  const handleMouseEnter = (index, title) => {
+    // Clear any existing timeout
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+    }
+    
+    // Set a timeout of 200ms before showing the description
+    hoverTimeoutRef.current = setTimeout(() => {
+      setHoveredRow(index);
+      
+      // If we don't have this description yet, find it in the JSON data
+      if (!descriptions[title] && jsonData.length > 0) {
+        const idea = jsonData.find(item => item.product_title === title);
+        if (idea) {
+          setDescriptions(prev => ({
+            ...prev,
+            [title]: idea.description
+          }));
+        }
+      }
+    }, 200);
+  };
+
+  // Handle mouse leave
+  const handleMouseLeave = () => {
+    // Clear the timeout
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+    }
+    setHoveredRow(null);
+  };
+
   return (
     <div className="space-y-8">
       <div className="relative overflow-x-auto shadow-md rounded-lg">
@@ -21,7 +74,12 @@ function DataTable({ data, hasAccess, onGetAccess }) {
           </thead>
           <tbody>
             {data.map((row, index) => (
-              <tr key={index} className="bg-white border-b hover:bg-gray-50 transition-colors">
+              <tr 
+                key={index}
+                className={`bg-white border-b hover:bg-gray-50 transition-colors ${index === hoveredRow ? 'bg-gray-50' : ''}`}
+                onMouseEnter={() => handleMouseEnter(index, row['SaaS Niche'])}
+                onMouseLeave={handleMouseLeave}
+              >
                 {[row['SaaS Niche'], 
                   row['Monthly Keyword Searches'], 
                   row['Evaluation of Competition'], 
@@ -30,7 +88,14 @@ function DataTable({ data, hasAccess, onGetAccess }) {
                     {i === 0 ? (
                       <span className="text-gray-500">{value}</span>
                     ) : i === 1 ? (
-                      <span className="text-green-600 font-medium">{value}</span>
+                      <div className="relative">
+                        <span className="text-green-600 font-medium">{value}</span>
+                        {index === hoveredRow && descriptions[row['SaaS Niche']] && (
+                          <div className="absolute left-0 top-full mt-2 w-96 max-w-lg bg-white p-4 shadow-lg rounded z-50 text-sm border border-gray-200 animate-fade-in pointer-events-none">
+                            <p className="text-gray-700 whitespace-normal leading-relaxed">{descriptions[row['SaaS Niche']]}</p>
+                          </div>
+                        )}
+                      </div>
                     ) : i === 2 ? (
                       <span className={`px-3 py-1 rounded-full text-sm font-medium
                         ${value === 'High' ? 'bg-red-100 text-red-800' : 

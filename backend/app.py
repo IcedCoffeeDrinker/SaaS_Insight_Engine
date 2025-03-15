@@ -89,5 +89,12 @@ def register_access():
     
     return jsonify({"success": True})
 
+@app.route('/api/saas-ideas')
+def get_saas_ideas():
+    file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data', 'SaaS_ideas.json')
+    with open(file_path, 'r') as f:
+        saas_ideas = json.load(f)
+    return jsonify(saas_ideas)
+
 if __name__ == '__main__':
     app.run(debug=True)
