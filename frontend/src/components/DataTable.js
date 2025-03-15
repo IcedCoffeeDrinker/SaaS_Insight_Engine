@@ -5,6 +5,14 @@ function DataTable({ data, hasAccess, onGetAccess }) {
   const [hoveredRow, setHoveredRow] = useState(null);
   const [jsonData, setJsonData] = useState([]);
   const hoverTimeoutRef = useRef(null);
+  const [currentPage, setCurrentPage] = useState(0);
+  const entriesPerPage = 25;
+
+  // Calculate total pages and current page data
+  const totalPages = Math.ceil(data.length / entriesPerPage);
+  const currentData = hasAccess 
+    ? data.slice(currentPage * entriesPerPage, (currentPage + 1) * entriesPerPage)
+    : data.slice(0, 8); // Always show first 8 for non-paying users
 
   // Fetch the JSON data when component mounts
   useEffect(() => {
@@ -54,6 +62,19 @@ function DataTable({ data, hasAccess, onGetAccess }) {
     setHoveredRow(null);
   };
 
+  // Navigation handlers
+  const goToNextPage = () => {
+    if (currentPage < totalPages - 1) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const goToPreviousPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
   return (
     <div className="space-y-8">
       <div className="relative overflow-x-auto shadow-md rounded-lg">
@@ -73,7 +94,7 @@ function DataTable({ data, hasAccess, onGetAccess }) {
             )}
           </thead>
           <tbody>
-            {data.map((row, index) => (
+            {currentData.map((row, index) => (
               <tr 
                 key={index}
                 className={`bg-white border-b hover:bg-gray-50 transition-colors ${index === hoveredRow ? 'bg-gray-50' : ''}`}
@@ -114,6 +135,31 @@ function DataTable({ data, hasAccess, onGetAccess }) {
             ))}
           </tbody>
         </table>
+        
+        {/* Pagination controls - only visible for users with access */}
+        {hasAccess && data.length > entriesPerPage && (
+          <div className="flex justify-between items-center px-6 py-3 bg-gray-50">
+            <div className="text-sm text-gray-700">
+              Page {currentPage + 1} of {totalPages} • {data.length} total opportunities
+            </div>
+            <div className="flex space-x-2">
+              <button 
+                onClick={goToPreviousPage} 
+                disabled={currentPage === 0}
+                className={`p-2 rounded ${currentPage === 0 ? 'text-gray-400 cursor-not-allowed' : 'text-blue-600 hover:bg-blue-100'}`}
+              >
+                ←
+              </button>
+              <button 
+                onClick={goToNextPage} 
+                disabled={currentPage >= totalPages - 1}
+                className={`p-2 rounded ${currentPage >= totalPages - 1 ? 'text-gray-400 cursor-not-allowed' : 'text-blue-600 hover:bg-blue-100'}`}
+              >
+                →
+              </button>
+            </div>
+          </div>
+        )}
         
         {!hasAccess && (
           <div className="absolute inset-x-0 bottom-0 h-1/3 flex items-center justify-center"
