@@ -46,6 +46,11 @@ def process_comment(comment):
     """Process a new Reddit comment and add it to the collection if it meets criteria."""
     global comments, comment_counter, generation_cooldown, subreddit_cooldowns
     
+    # Check if the comment contains bot disclaimer - skip if it does
+    if "i am a bot" in comment.body.lower():
+        print(f"Ignored bot comment in r/{comment.subreddit}\n\n")
+        return
+    
     # Check if we need to respect the cooldown for this subreddit
     subreddit_name = str(comment.subreddit)
     current_time = time.time()
