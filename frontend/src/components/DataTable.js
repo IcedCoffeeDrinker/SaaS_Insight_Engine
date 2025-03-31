@@ -75,6 +75,25 @@ function DataTable({ data, hasAccess, onGetAccess }) {
     }
   };
 
+  // Adjust tooltip position to prevent clipping
+  const tooltipRef = useRef(null);
+
+  useEffect(() => {
+    if (hoveredRow !== null && tooltipRef.current) {
+      const tooltipRect = tooltipRef.current.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      const isNearBottom = tooltipRect.bottom > viewportHeight;
+      const isSecondLast = hoveredRow === currentData.length - 2;
+      const isLast = hoveredRow === currentData.length - 1;
+
+      if (isNearBottom || isSecondLast || isLast) {
+        tooltipRef.current.style.top = `-${tooltipRect.height / 2}px`;
+      } else {
+        tooltipRef.current.style.top = '100%';
+      }
+    }
+  }, [hoveredRow, currentData.length]);
+
   return (
     <div className="space-y-8">
       <div className="relative overflow-x-auto shadow-md rounded-lg">
@@ -112,7 +131,10 @@ function DataTable({ data, hasAccess, onGetAccess }) {
                       <div className="relative">
                         <span className="text-green-600 font-medium">{value}</span>
                         {index === hoveredRow && descriptions[row['SaaS Niche']] && (
-                          <div className="absolute left-0 top-full mt-2 w-96 max-w-lg bg-white p-4 shadow-lg rounded z-50 text-sm border border-gray-200 animate-fade-in pointer-events-none">
+                          <div
+                            ref={tooltipRef}
+                            className="absolute left-0 mt-2 w-96 max-w-lg bg-white p-4 shadow-lg rounded z-50 text-sm border border-gray-200 animate-fade-in pointer-events-none"
+                          >
                             <p className="text-gray-700 whitespace-normal leading-relaxed">{descriptions[row['SaaS Niche']]}</p>
                           </div>
                         )}
