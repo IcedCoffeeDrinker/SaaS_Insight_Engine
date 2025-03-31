@@ -17,6 +17,9 @@ function PaymentModal({ onClose, onSuccess }) {
     setError(null);
 
     try {
+      console.log("Starting payment process...");
+      console.log("API URL:", `${API_URL}/api/create-payment-intent`);
+      
       const response = await fetch(`${API_URL}/api/create-payment-intent`, {
         method: 'POST',
         headers: {
@@ -25,7 +28,16 @@ function PaymentModal({ onClose, onSuccess }) {
         body: JSON.stringify({ amount: 3000 }),
       });
       
-      const { clientSecret } = await response.json();
+      // Log the entire response for debugging
+      const responseData = await response.json();
+      console.log("API Response:", responseData);
+      
+      if (!responseData.clientSecret) {
+        console.error("No client secret in response:", responseData);
+        throw new Error("Server did not return a client secret");
+      }
+      
+      const clientSecret = responseData.clientSecret;
 
       const result = await stripe.confirmCardPayment(clientSecret, {
         payment_method: {

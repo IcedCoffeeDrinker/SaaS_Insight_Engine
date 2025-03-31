@@ -59,15 +59,27 @@ def get_preview_data():
 @app.route('/api/create-payment-intent', methods=['POST'])
 def create_payment():
     try:
+        print("Creating payment intent...")
+        print(f"Using Stripe key: {stripe.api_key[:4]}...")  # Only print first 4 chars for security
+        
         payment_intent = stripe.PaymentIntent.create(
             amount=3000,  # $30.00
             currency='usd'
         )
+        
+        print(f"Payment intent created: {payment_intent.id}")
+        print(f"Client secret: {payment_intent.client_secret[:5]}...")  # Only log part of it
+        
         return jsonify({
             'clientSecret': payment_intent.client_secret
         })
     except Exception as e:
-        return jsonify(error=str(e)), 403
+        print(f"Error creating payment intent: {str(e)}")
+        # Return the error details for debugging
+        return jsonify({
+            'error': str(e),
+            'stripe_key_set': bool(stripe.api_key)
+        }), 403
 
 @app.route('/api/verify-access', methods=['POST'])
 def verify_access():
