@@ -3,6 +3,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import Navbar from './components/Navbar';
 import DataTable from './components/DataTable';
+import SocialProof from './components/SocialProof';
 import PaymentModal from './components/PaymentModal';
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
@@ -83,6 +84,8 @@ function App() {
           hasAccess={hasAccess} 
           onGetAccess={() => setShowPaymentModal(true)} 
         />
+        
+        <SocialProof />
 
         {showPaymentModal && (
           <Elements stripe={stripePromise}>

@@ -169,15 +169,15 @@ def map_competition(competition_value):
         value = float(competition_value)
         
         if value < 20:
-        return "Very Low"
+            return "Very Low"
         elif value < 40:
-        return "Low"
+            return "Low"
         elif value < 60:
-        return "Moderate"
+            return "Moderate"
         elif value < 80:
-        return "High"
-    else:
-        return "Very High"
+            return "High"
+        else:
+            return "Very High"
     except (ValueError, TypeError):
         return DUMMY_DATA[1]
 
