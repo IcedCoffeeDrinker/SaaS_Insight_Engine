@@ -7,9 +7,9 @@
       "streaming",
       "video content"
     ],
-    "avg_monthly_searches": null,
-    "competition_level": null,
-    "revenue": null
+    "avg_monthly_searches": 279500,
+    "competition_level": "Low",
+    "revenue": 86678
   },
   {
     "product_title": "Regulatory Compliance Voice",
@@ -19,9 +19,9 @@
       "legal advice",
       "marketing regulations"
     ],
-    "avg_monthly_searches": null,
-    "competition_level": null,
-    "revenue": null
+    "avg_monthly_searches": 12310,
+    "competition_level": "Very Low",
+    "revenue": 3630
   },
   {
     "product_title": "Sales-AI Personal Shopper",
@@ -31,9 +31,9 @@
       "AI chatbot",
       "personalized shopping"
     ],
-    "avg_monthly_searches": null,
-    "competition_level": null,
-    "revenue": null
+    "avg_monthly_searches": 640640,
+    "competition_level": "Low",
+    "revenue": 203273
   },
   {
     "product_title": "Job Evolution Forecast Platform",
@@ -43,9 +43,9 @@
       "future of work",
       "AI impact"
     ],
-    "avg_monthly_searches": null,
-    "competition_level": null,
-    "revenue": null
+    "avg_monthly_searches": 3310,
+    "competition_level": "Very Low",
+    "revenue": 856
   },
   {
     "product_title": "HyperInflation Tracker",
@@ -55,9 +55,9 @@
       "personal finance",
       "economic indicators"
     ],
-    "avg_monthly_searches": null,
-    "competition_level": null,
-    "revenue": null
+    "avg_monthly_searches": 22500,
+    "competition_level": "Very Low",
+    "revenue": 6986
   },
   {
     "product_title": "Startup CoFounder Connector",
@@ -67,9 +67,9 @@
       "co-founder matching",
       "entrepreneurship"
     ],
-    "avg_monthly_searches": null,
-    "competition_level": null,
-    "revenue": null
+    "avg_monthly_searches": 301620,
+    "competition_level": "Very Low",
+    "revenue": 99896
   },
   {
     "product_title": "Post-Apocalyptic Simulation Game",
@@ -79,9 +79,9 @@
       "strategy simulation",
       "community building"
     ],
-    "avg_monthly_searches": null,
-    "competition_level": null,
-    "revenue": null
+    "avg_monthly_searches": 41270,
+    "competition_level": "Very Low",
+    "revenue": 13311
   },
   {
     "product_title": "Virtual Martial Arts Academy",
@@ -91,9 +91,9 @@
       "fitness classes",
       "online learning"
     ],
-    "avg_monthly_searches": null,
-    "competition_level": null,
-    "revenue": null
+    "avg_monthly_searches": 221100,
+    "competition_level": "Low",
+    "revenue": 71632
   },
   {
     "product_title": "Interactive Knowledge Sharing Platform",
@@ -103,9 +103,9 @@
       "community learning",
       "salary negotiations"
     ],
-    "avg_monthly_searches": null,
-    "competition_level": null,
-    "revenue": null
+    "avg_monthly_searches": 8710,
+    "competition_level": "Very Low",
+    "revenue": 2568
   },
   {
     "product_title": "Boot Device Troubleshooter",
@@ -115,9 +115,9 @@
       "boot issues",
       "IT troubleshooting"
     ],
-    "avg_monthly_searches": null,
-    "competition_level": null,
-    "revenue": null
+    "avg_monthly_searches": 300,
+    "competition_level": "Very Low",
+    "revenue": 58
   },
   {
     "product_title": "Inclusive Learning Platform",
@@ -127,9 +127,9 @@
       "mentorship",
       "inclusivity"
     ],
-    "avg_monthly_searches": null,
-    "competition_level": null,
-    "revenue": null
+    "avg_monthly_searches": 150300,
+    "competition_level": "Very Low",
+    "revenue": 48997
   },
   {
     "product_title": "Skill Assessment Navigator",
@@ -139,9 +139,9 @@
       "skill assessment",
       "programming"
     ],
-    "avg_monthly_searches": null,
-    "competition_level": null,
-    "revenue": null
+    "avg_monthly_searches": 35140,
+    "competition_level": "Very Low",
+    "revenue": 11284
   },
   {
     "product_title": "Community-Driven Product Feedback System",
@@ -151,9 +151,9 @@
       "product feedback",
       "entrepreneurship"
     ],
-    "avg_monthly_searches": null,
-    "competition_level": null,
-    "revenue": null
+    "avg_monthly_searches": 307920,
+    "competition_level": "Very Low",
+    "revenue": 101878
   },
   {
     "product_title": "College Networking Hub",
@@ -162,6 +162,318 @@
       "networking",
       "career opportunities",
       "college"
+    ],
+    "avg_monthly_searches": 612700,
+    "competition_level": "Very Low",
+    "revenue": 198887
+  },
+  {
+    "product_title": "Warranty Tracker Pro",
+    "description": "A SaaS platform designed to help consumers manage their product warranties across multiple brands and countries. Users can input product details, track warranty periods, receive notifications for expirations, and access brand-specific service requirements. This tool caters especially to consumers in markets with varying warranty standards, ensuring they are well-informed and prepared for service claims.",
+    "keywords": [
+      "warranty management",
+      "consumer rights",
+      "product tracking"
+    ],
+    "avg_monthly_searches": 2380,
+    "competition_level": "Very Low",
+    "revenue": 614
+  },
+  {
+    "product_title": "HelpDesk Language Integrity",
+    "description": "An intelligent help desk software that ensures all user-facing notifications and service messages are presented in the user's preferred language. This tool aims to reduce confusion caused by language discrepancies, like the issues seen with printer drivers, and improves user experience by providing seamless multilingual support for companies serving diverse customer bases.",
+    "keywords": [
+      "help desk software",
+      "multilingual support",
+      "customer experience"
+    ],
+    "avg_monthly_searches": 11870,
+    "competition_level": "Low",
+    "revenue": 3493
+  },
+  {
+    "product_title": "Productivity Spreadsheet Suite",
+    "description": "A unique SaaS solution that enhances traditional spreadsheet usage for productivity tracking. Features include customizable templates, collaborative sharing options, and mobile access, allowing users to step away from phones and focus better. Perfect for teams seeking a balance between digital tools and traditional methods, fostering a more concentrated work environment.",
+    "keywords": [
+      "productivity tools",
+      "spreadsheet software",
+      "team collaboration"
+    ],
+    "avg_monthly_searches": 11200,
+    "competition_level": "Low",
+    "revenue": 3077
+  },
+  {
+    "product_title": "Launch Readiness Gauge",
+    "description": "A SaaS tool designed for software development teams to assess their readiness for product launches. The platform includes project tracking, deadline management, and quality assessment features, helping teams identify potential risks and areas for improvement early in the development cycle. This service is ideal for tech companies wishing to mitigate the chaos commonly associated with product launches.",
+    "keywords": [
+      "product launch",
+      "project management",
+      "software development"
+    ],
+    "avg_monthly_searches": 77200,
+    "competition_level": "Low",
+    "revenue": 23538
+  },
+  {
+    "product_title": "Morning Mindfulness Tracker",
+    "description": "The Morning Mindfulness Tracker is an app designed for individuals who want to enhance their morning routine through guided meditation and reflection. It allows users to log their meditation sessions and morning activities, such as enjoying coffee, while tracking their mood and energy levels. The app features reminders to wake up early, along with customizable meditation guides, fostering a sense of calm and organization. Ideal for busy professionals seeking personal time before their day begins.",
+    "keywords": [
+      "mindfulness",
+      "morning routine",
+      "meditation app"
+    ],
+    "avg_monthly_searches": 123400,
+    "competition_level": "Very Low",
+    "revenue": 39743
+  },
+  {
+    "product_title": "Digital To-Do List With Progress Tracking",
+    "description": "The Digital To-Do List With Progress Tracking is a SaaS platform that combines traditional to-do list mechanics with modern technology. Users can input daily tasks and visually track their progress as they complete each item. The tool includes features like deadline reminders, customizable categories, and daily goal setting, benefiting users who thrive on organization and motivation. Perfect for anyone looking to enhance productivity while maintaining a sense of accomplishment like crossing off tasks.",
+    "keywords": [
+      "productivity",
+      "task management",
+      "to-do list"
+    ],
+    "avg_monthly_searches": 83900,
+    "competition_level": "Low",
+    "revenue": 25519
+  },
+  {
+    "product_title": "Community Feedback Loop Platform",
+    "description": "The Community Feedback Loop Platform is an engagement tool designed for startups and small businesses to gather real-time feedback from niche communities before launching new products. This platform allows users to create surveys and polls, receive input from targeted audiences, and analyze data to iterate on product offerings. It is tailored for developers and entrepreneurs who want to ensure market fit and reduce the risk of launching ineffective products.",
+    "keywords": [
+      "market research",
+      "user feedback",
+      "startup tool"
+    ],
+    "avg_monthly_searches": 15370,
+    "competition_level": "Very Low",
+    "revenue": 4753
+  },
+  {
+    "product_title": "Audio Quality Enhancer",
+    "description": "An AI-driven tool that analyzes streaming audio quality across various platforms like Spotify and Apple Music. It provides users with personalized adjustments and settings based on their listening preferences and device capabilities, ensuring an optimal audio experience for music lovers and audiophiles.",
+    "keywords": [
+      "audio quality",
+      "music streaming",
+      "sound enhancement"
+    ],
+    "avg_monthly_searches": 7300,
+    "competition_level": "Very Low",
+    "revenue": 2188
+  },
+  {
+    "product_title": "SD Recovery Assistant",
+    "description": "A user-friendly software application designed to help users recover lost or inaccessible data from SD cards. It features step-by-step guidance for troubleshooting SD card issues, identifying potential corruption, and offering recovery options without requiring technical expertise, catering to smartphone users and digital photographers.",
+    "keywords": [
+      "data recovery",
+      "SD card",
+      "troubleshooting"
+    ],
+    "avg_monthly_searches": 165300,
+    "competition_level": "Moderate",
+    "revenue": 47076
+  },
+  {
+    "product_title": "Software Cleanup Toolkit",
+    "description": "A comprehensive tool that scans for grayware, unwanted software, and system inefficiencies on personal computers. It provides users with a straightforward interface to identify, remove, or manage problematic applications, enhancing device performance and security, tailored for both casual users and IT professionals.",
+    "keywords": [
+      "software cleanup",
+      "performance optimization",
+      "PC security"
+    ],
+    "avg_monthly_searches": 2350,
+    "competition_level": "Moderate",
+    "revenue": 515
+  },
+  {
+    "product_title": "Startup Compliance Manager",
+    "description": "A SaaS platform designed to help small businesses streamline compliance processes and legal checks associated with product development and sales. It offers templates, automated workflows, and integration with existing tools to simplify and accelerate the compliance journey, making it easier for entrepreneurs and small business owners to focus on growth.",
+    "keywords": [
+      "compliance management",
+      "small business",
+      "legal workflow"
+    ],
+    "avg_monthly_searches": 34770,
+    "competition_level": "Very Low",
+    "revenue": 11065
+  },
+  {
+    "product_title": "User Feedback Loop",
+    "description": "A platform that facilitates ongoing user feedback collection and analysis for SaaS products. It allows developers to create tailored surveys and engage with users in real-time, helping to ensure that product features resonate with their target audience and enhance user experience, ideal for startup founders and product managers.",
+    "keywords": [
+      "user feedback",
+      "SaaS improvement",
+      "product development"
+    ],
+    "avg_monthly_searches": 8580,
+    "competition_level": "Very Low",
+    "revenue": 2563
+  },
+  {
+    "product_title": "Automated Vulnerability Management for Organizations",
+    "description": "A SaaS platform designed to streamline vulnerability management via integration with existing DevSecOps practices. It focuses on automating the detection of vulnerabilities through regular security audits, providing alerts, and recommending pentest schedules. This product targets enterprises looking to enhance their security posture without overwhelming their development workflows.",
+    "keywords": [
+      "vulnerability management",
+      "DevSecOps",
+      "security audits"
+    ],
+    "avg_monthly_searches": 15900,
+    "competition_level": "Low",
+    "revenue": 4659
+  },
+  {
+    "product_title": "Cloud Migration Simplifier",
+    "description": "This tool assists organizations with a seamless transition of magnetic tape libraries and other legacy data storage solutions to cloud platforms or solid-state drives. It automates the data migration process while ensuring compliance and security, catering to teams that may not have extensive cloud migration experience, thus targeting non-technical stakeholders in organizations.",
+    "keywords": [
+      "cloud migration",
+      "data transfer",
+      "legacy systems"
+    ],
+    "avg_monthly_searches": 6700,
+    "competition_level": "Low",
+    "revenue": 1823
+  },
+  {
+    "product_title": "Integrated Expense Sharing System",
+    "description": "A collaborative platform that helps corporate clients manage shared expenses across departments. This tool enables teams to harmonize costs for common services, fostering a culture of transparency and efficiency in financial management. It targets mid to large-sized enterprises looking to optimize their budget handling processes across various services.",
+    "keywords": [
+      "budget management",
+      "expense sharing",
+      "corporate finance"
+    ],
+    "avg_monthly_searches": 9960,
+    "competition_level": "Very Low",
+    "revenue": 2965
+  },
+  {
+    "product_title": "User-Friendly Troubleshooting Platform",
+    "description": "An intuitive SaaS platform that provides step-by-step guides for resolving common technical issues like lagging computers or audio problems. The platform uses AI to give personalized troubleshooting advice based on user inputs and can target both individual users and IT departments seeking to reduce downtime and improve user satisfaction.",
+    "keywords": [
+      "troubleshooting",
+      "tech support",
+      "user assistance"
+    ],
+    "avg_monthly_searches": 40520,
+    "competition_level": "Very Low",
+    "revenue": 13340
+  },
+  {
+    "product_title": "Health Habit Tracker",
+    "description": "An engaging app designed to help individuals track and build healthy habits, such as walking 10,000 steps a day. It provides personalized tips, reminders, and health insights to keep users motivated on their journey towards improved physical and mental well-being, appealing to health-conscious individuals and fitness enthusiasts.",
+    "keywords": [
+      "habit tracking",
+      "health improvement",
+      "fitness motivation"
+    ],
+    "avg_monthly_searches": 24100,
+    "competition_level": "Low",
+    "revenue": 6431
+  },
+  {
+    "product_title": "Automated Workshop Billing System",
+    "description": "An intuitive billing management application designed for garages and small automotive workshops. This software replaces handwritten billing with a fully digital system that simplifies invoicing, integrates client management, and streamlines payment processing. By making billing user-friendly, it allows business owners to focus more on service and less on paperwork.",
+    "keywords": [
+      "garage management",
+      "billing software",
+      "invoice automation"
+    ],
+    "avg_monthly_searches": 2670,
+    "competition_level": "Low",
+    "revenue": 652
+  },
+  {
+    "product_title": "Personalized Productivity Experimentation Hub",
+    "description": "A SaaS platform that empowers users to experiment with different productivity frameworks by allowing them to create, track, and refine their own customized methods. Users can pull elements from well-known systems like GTD, build new workflows, and analyze their effectiveness, all while focusing on high-quality work hours rather than rigid adherence to traditional models.",
+    "keywords": [
+      "productivity tools",
+      "workflow customization",
+      "personal efficiency"
+    ],
+    "avg_monthly_searches": 2950,
+    "competition_level": "Very Low",
+    "revenue": 790
+  },
+  {
+    "product_title": "Proposal Creation Streamliner",
+    "description": "A streamlined proposal management tool that enhances the user experience by reducing unnecessary steps. Users are guided directly to proposal creation post-signup, can save drafts and templates, and simplify service and milestone inputs, ensuring a smooth and efficient process for creating and managing client proposals without redundancy.",
+    "keywords": [
+      "proposal management",
+      "client proposals",
+      "UX optimization"
+    ],
+    "avg_monthly_searches": 710,
+    "competition_level": "Very Low",
+    "revenue": 141
+  },
+  {
+    "product_title": "Bandwidth Management for Public Hotspots",
+    "description": "A service that helps users manage and control their home WiFi networks, allowing them to enable or disable public hotspot access easily. This solution provides clear insights into connected devices and bandwidth limits, ensuring that home users can safely share their internet without compromising their own speeds.",
+    "keywords": [
+      "WiFi management",
+      "bandwidth control",
+      "public hotspots"
+    ],
+    "avg_monthly_searches": 310,
+    "competition_level": "Very Low",
+    "revenue": 55
+  },
+  {
+    "product_title": "High-Quality Work Hour Tracker",
+    "description": "An application designed for professionals seeking to optimize their work-life balance. Users can track only the most productive hours without overwhelming data, focusing on their natural rhythms and enhancing clarity. The platform encourages a shift away from obsessive productivity metrics towards mindful work habits.",
+    "keywords": [
+      "work-life balance",
+      "time tracking",
+      "productivity enhancement"
+    ],
+    "avg_monthly_searches": 32170,
+    "competition_level": "Low",
+    "revenue": 10070
+  },
+  {
+    "product_title": "Smart Task Prioritization Tool",
+    "description": "This SaaS product helps users effectively prioritize their tasks without being reliant on physical lists. The tool utilizes AI to analyze user tasks, deadlines, and personal productivity patterns, generating tailored task recommendations and reminders to keep users on track. It's ideal for students and professionals seeking to boost productivity and manage time efficiently.",
+    "keywords": [
+      "task management",
+      "productivity",
+      "AI reminders"
+    ],
+    "avg_monthly_searches": null,
+    "competition_level": null,
+    "revenue": null
+  },
+  {
+    "product_title": "SaaS Progress Tracker for Founders",
+    "description": "This platform is designed for startup founders to share their project journeys, providing tools for documenting progress, challenges faced, and lessons learned. It features a community-driven forum where users can post updates and receive feedback, fostering transparency and collaboration within the startup ecosystem.",
+    "keywords": [
+      "startup tracking",
+      "founder community",
+      "project management"
+    ],
+    "avg_monthly_searches": null,
+    "competition_level": null,
+    "revenue": null
+  },
+  {
+    "product_title": "AI Communication Coach",
+    "description": "An AI-driven SaaS that helps users improve their communication skills by providing personalized training exercises and feedback. Tailored to students, professionals, and anyone looking to enhance their communication abilities, the platform focuses on clarity, persuasion, and confidence in verbal and written communication.",
+    "keywords": [
+      "communication skills",
+      "AI coaching",
+      "personal development"
+    ],
+    "avg_monthly_searches": null,
+    "competition_level": null,
+    "revenue": null
+  },
+  {
+    "product_title": "Educational Substitute Resource Hub",
+    "description": "This SaaS provides a comprehensive library of resources for substitute teachers, including lesson plans, instructional materials, and specialized training. Aimed at schools and educators, it helps ensure a smooth transition for students when their regular teacher is unavailable, specifically addressing subjects with continuity challenges like Calculus.",
+    "keywords": [
+      "substitute teaching",
+      "educational resources",
+      "classroom management"
     ],
     "avg_monthly_searches": null,
     "competition_level": null,

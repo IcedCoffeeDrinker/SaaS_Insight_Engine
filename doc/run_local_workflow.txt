@@ -21,7 +21,7 @@
 
 ########################################################
 
-## RUN ##
+## SETUP ##
 
 # Create virtual environment
 python -m venv venv
@@ -44,17 +44,23 @@ pip install -r requirements.txt
 cd ..
 cd frontend
 
-# Initialize Node project (if package.json doesn't exist)
-npm init -y
-
 # Install Node dependencies
 npm install
-npm install react react-dom @stripe/stripe-js @stripe/react-stripe-js tailwindcss postcss autoprefixer react-scripts
+
+# Set up environment variables
+# Copy .env.example to .env in project root
+cp ../.env.example ../.env
+# Edit .env with your API keys
+
+# Copy .env.example to .env in frontend directory
+cp .env.example .env
+# Add your Stripe publishable key to .env
+# REACT_APP_STRIPE_PUBLISHABLE_KEY=<YOUR_STRIPE_PUBLISHABLE_KEY>
 
 # Return to root directory
 cd ..
 
-## Start Applications ##
+## RUN LOCALLY ##
 
 # Terminal 1 - Start Backend (from project root)
 cd backend
@@ -64,6 +70,13 @@ flask run
 cd frontend
 npm start
 
+## Local vs Production Configuration ##
+
+# The app is configured to work in both local development and production environments:
+# - In development, API calls default to http://localhost:5000
+# - In production, API calls use REACT_APP_API_URL from environment variables
+# - CORS is configured to accept requests from both localhost:3000 and production domain
+
 ## Testing ##
 
 # Stripe test card
@@ -72,18 +85,17 @@ Expiry: Any future date
 CVC: Any 3 digits
 ZIP: Any 5 digits
 
-
-## KILL ##
+## CLEANUP ##
 
 # Deactivate virtual environment
 deactivate
 
-# Delete virtual environment
+# Delete virtual environment (optional)
 rm -rf venv
 
-# Clean frontend build
+# Clean frontend build (optional)
 cd frontend
-rm -rf node_modules package-lock.json
+rm -rf node_modules package-lock.json build
 cd ..
 
 # Kill running processes
@@ -97,6 +109,7 @@ cd ..
 # If CORS errors occur:
 # - Check that backend is running on http://localhost:5000
 # - Check that frontend is running on http://localhost:3000
+# - Verify CORS configuration in backend/app.py
 
 # If Stripe doesn't work:
 # - Verify .env files exist in both root and frontend directories

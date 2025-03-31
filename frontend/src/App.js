@@ -8,6 +8,9 @@ import PaymentModal from './components/PaymentModal';
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
+// API URL - use environment variable in production or default to localhost for development
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 function App() {
   const [previewData, setPreviewData] = useState([]);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
@@ -22,8 +25,8 @@ function App() {
   const fetchPreviewData = async () => {
     const email = localStorage.getItem('userEmail');
     const url = email 
-      ? `http://localhost:5000/api/preview-data?email=${encodeURIComponent(email)}`
-      : 'http://localhost:5000/api/preview-data';
+      ? `${API_URL}/api/preview-data?email=${encodeURIComponent(email)}`
+      : `${API_URL}/api/preview-data`;
       
     const response = await fetch(url);
     const data = await response.json();
@@ -34,7 +37,7 @@ function App() {
     const email = localStorage.getItem('userEmail');
     if (!email) return;
 
-    const response = await fetch('http://localhost:5000/api/verify-access', {
+    const response = await fetch(`${API_URL}/api/verify-access`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -46,7 +49,7 @@ function App() {
   };
 
   const handleRestore = async (email) => {
-    const response = await fetch('http://localhost:5000/api/verify-access', {
+    const response = await fetch(`${API_URL}/api/verify-access`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

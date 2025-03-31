@@ -10,7 +10,12 @@ import csv
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)
+
+# Configure CORS - update for production
+# For local development: http://localhost:3000
+# For production: get from env var or default to Render URL
+frontend_url = os.getenv('FRONTEND_URL', 'https://saas-insight-frontend.onrender.com')
+CORS(app, resources={r"/api/*": {"origins": [frontend_url, "http://localhost:3000"]}})
 
 # Configure Stripe
 stripe.api_key = os.getenv('STRIPE_SECRET_KEY')

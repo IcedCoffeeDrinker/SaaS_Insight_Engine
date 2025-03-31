@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 
+// API URL - use environment variable in production or default to localhost for development
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 function DataTable({ data, hasAccess, onGetAccess }) {
   const [descriptions, setDescriptions] = useState({});
   const [hoveredRow, setHoveredRow] = useState(null);
@@ -18,7 +21,7 @@ function DataTable({ data, hasAccess, onGetAccess }) {
   useEffect(() => {
     const fetchJsonData = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/saas-ideas');
+        const response = await fetch(`${API_URL}/api/saas-ideas`);
         const data = await response.json();
         setJsonData(data);
       } catch (error) {
@@ -143,6 +146,7 @@ function DataTable({ data, hasAccess, onGetAccess }) {
                       <span className={`px-3 py-1 rounded-full text-sm font-medium
                         ${value === 'High' ? 'bg-red-100 text-red-800' : 
                           value === 'Moderate' ? 'bg-yellow-100 text-yellow-800' : 
+                          value === 'Low' ? 'bg-teal-100 text-teal-800' :
                           'bg-green-100 text-green-800'}`}>
                         {value}
                       </span>

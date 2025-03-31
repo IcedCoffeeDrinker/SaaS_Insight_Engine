@@ -31,6 +31,17 @@ A data-driven platform that helps entrepreneurs identify profitable SaaS opportu
 
 See `doc/run_local_workflow.txt` for detailed setup and running instructions.
 
+## Deployment
+
+This project is ready for deployment on Render:
+
+1. Push your code to GitHub
+2. Connect your repository to Render using the `render.yaml` Blueprint
+3. Set up environment variables in the Render dashboard
+4. Deploy both backend and frontend services
+
+For detailed deployment instructions, see `doc/render_deployment.md`.
+
 ## License
 
 This project is licensed under the ISC License.

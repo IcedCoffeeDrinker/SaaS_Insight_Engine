@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 
+// API URL - use environment variable in production or default to localhost for development
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 function PaymentModal({ onClose, onSuccess }) {
   const stripe = useStripe();
   const elements = useElements();
@@ -14,7 +17,7 @@ function PaymentModal({ onClose, onSuccess }) {
     setError(null);
 
     try {
-      const response = await fetch('http://localhost:5000/api/create-payment-intent', {
+      const response = await fetch(`${API_URL}/api/create-payment-intent`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -36,7 +39,7 @@ function PaymentModal({ onClose, onSuccess }) {
       if (result.error) {
         setError(result.error.message);
       } else {
-        await fetch('http://localhost:5000/api/register-access', {
+        await fetch(`${API_URL}/api/register-access`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -60,7 +63,7 @@ function PaymentModal({ onClose, onSuccess }) {
 
   // Function to fetch the full data after payment
   const fetchFullData = async (email) => {
-    const url = `http://localhost:5000/api/preview-data?email=${encodeURIComponent(email)}`;
+    const url = `${API_URL}/api/preview-data?email=${encodeURIComponent(email)}`;
     await fetch(url);
   };
 
