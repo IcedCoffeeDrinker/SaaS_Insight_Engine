@@ -7,10 +7,35 @@ services:
     buildCommand: pip install -r backend/requirements.txt
     startCommand: cd backend && gunicorn app:app
     envVars:
+      - key: FLASK_APP
+        value: app.py
       - key: FLASK_ENV
         value: production
       - key: PYTHONPATH
         value: .
+      # Add environment variables that need to be set in Render dashboard:
+      - key: STRIPE_PUBLISHABLE_KEY
+        sync: false
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: REDDIT_CLIENT_ID
+        sync: false
+      - key: REDDIT_CLIENT_SECRET
+        sync: false
+      - key: REDDIT_USER_AGENT
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: DATAFORSEO_USERNAME
+        sync: false
+      - key: DATAFORSEO_PASSWORD
+        sync: false
+      - key: FRONTEND_URL
+        # This creates a reference to the frontend service URL
+        fromService:
+          type: web
+          name: saas-insight-frontend
+          envVarKey: RENDER_EXTERNAL_URL
     
   - type: web
     name: saas-insight-frontend
@@ -21,4 +46,13 @@ services:
     startCommand: cd frontend && npx serve -s build
     envVars:
       - key: NODE_ENV
-        value: production 
+        value: production
+      # Add environment variables that need to be set in Render dashboard:
+      - key: REACT_APP_STRIPE_PUBLISHABLE_KEY
+        sync: false
+      - key: REACT_APP_API_URL
+        # This creates a reference to the backend service URL
+        fromService:
+          type: web
+          name: saas-insight-api
+          envVarKey: RENDER_EXTERNAL_URL 

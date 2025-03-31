@@ -22,11 +22,9 @@ The project includes a `render.yaml` file that defines both the backend and fron
 
 ### 2. Configure Environment Variables
 
-After your services are created, you'll need to add your secret environment variables:
+The `render.yaml` file includes placeholders for all required environment variables. During the deployment process, Render will prompt you to provide values for the following variables marked with `sync: false`:
 
 #### For the backend service (saas-insight-api):
-
-Go to the service settings and add these environment variables:
 
 - `STRIPE_SECRET_KEY` - Your Stripe secret key
 - `STRIPE_PUBLISHABLE_KEY` - Your Stripe publishable key
@@ -36,14 +34,14 @@ Go to the service settings and add these environment variables:
 - `OPENAI_API_KEY` - Your OpenAI API key
 - `DATAFORSEO_USERNAME` - Your DataForSEO username
 - `DATAFORSEO_PASSWORD` - Your DataForSEO password
-- `FRONTEND_URL` - URL of your frontend service (e.g., https://saas-insight-frontend.onrender.com)
+
+The `FRONTEND_URL` will be automatically set to your frontend service's URL.
 
 #### For the frontend service (saas-insight-frontend):
 
-The frontend service should have these environment variables:
-
-- `REACT_APP_API_URL` - URL of your backend service (e.g., https://saas-insight-api.onrender.com)
 - `REACT_APP_STRIPE_PUBLISHABLE_KEY` - Your Stripe publishable key
+
+The `REACT_APP_API_URL` will be automatically set to your backend service's URL.
 
 ### 3. Deploy Your Services
 
@@ -57,13 +55,33 @@ Once both services are deployed:
 2. Test the functionality to ensure everything is working correctly
 3. Check the logs for any errors if you encounter issues
 
+## Plan Considerations
+
+### Free Tier Limitations
+
+The free tier of Render will work for:
+- Initial deployment and testing
+- Demonstration purposes
+- Low traffic situations
+
+However, be aware of these limitations:
+1. **No persistent disk storage** - files written to disk (like your JSON data and user files) don't persist between deployments
+2. **Limited compute resources** - may result in slower performance
+3. **Sleep after inactivity** - your service will spin down after periods of inactivity (15 minutes)
+
+### Recommendations for Production
+
+For a production deployment, consider upgrading to:
+- **Starter Plan ($7/month per service)**: Includes always-on services, more CPU/memory
+- **Pro Plan ($15/month per service)**: Includes persistent disk storage and more resources
+
 ## File Storage Considerations
 
 Render's free tier doesn't include persistent storage between deployments. For production use, consider these options:
 
-### Option 1: Using Render Disk
+### Option 1: Using Render Disk (Requires Pro Plan)
 
-Upgrade to a paid plan to access persistent disk storage.
+Upgrade to the Pro plan to access persistent disk storage.
 
 ### Option 2: Cloud Storage Integration
 

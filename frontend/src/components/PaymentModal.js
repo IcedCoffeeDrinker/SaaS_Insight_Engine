@@ -55,6 +55,7 @@ function PaymentModal({ onClose, onSuccess }) {
         onSuccess();
       }
     } catch (err) {
+      console.error('Payment error details:', err);
       setError('An error occurred. Please try again.');
     }
     
