@@ -388,6 +388,73 @@ def update_ideas_file(updated_ideas):
     except Exception as e:
         print(f"Error updating {file_path}: {e}")
 
+def generate_missing_metrics():
+    """
+    Generate metrics for all products that have null attributes.
+    This function reads the SaaS_ideas.json file, identifies ideas with null metrics,
+    and processes them in batches to generate metrics.
+    """
+    # Determine the project root directory
+    if os.path.basename(os.getcwd()) == 'backend':
+        base_dir = os.path.dirname(os.getcwd())  # Go up one level
+    else:
+        base_dir = os.getcwd()  # Assume we're already at the root
+        
+    file_path = os.path.join(base_dir, 'data', 'SaaS_ideas.json')
+    
+    try:
+        # Load ideas from file
+        all_ideas = []
+        if os.path.exists(file_path):
+            with open(file_path, 'r') as f:
+                content = f.read().strip()
+                if content:
+                    all_ideas = json.loads(content)
+                else:
+                    all_ideas = []
+        
+        if not all_ideas:
+            print("No ideas found in the file.")
+            return
+        
+        # Find ideas with null metrics
+        ideas_with_null_metrics = []
+        for idea in all_ideas:
+            if (idea.get('avg_monthly_searches') is None or 
+                idea.get('competition_level') is None or 
+                idea.get('revenue') is None):
+                ideas_with_null_metrics.append(idea)
+        
+        if not ideas_with_null_metrics:
+            print("No ideas with null metrics found.")
+            return
+        
+        print(f"Found {len(ideas_with_null_metrics)} ideas with null metrics.")
+        
+        # Process ideas in batches
+        global pending_ideas_for_keyword_analysis
+        
+        # Process in batches respecting the BATCH_SIZE_FOR_KEYWORD_ANALYSIS limit
+        for i in range(0, len(ideas_with_null_metrics), BATCH_SIZE_FOR_KEYWORD_ANALYSIS):
+            batch = ideas_with_null_metrics[i:i+BATCH_SIZE_FOR_KEYWORD_ANALYSIS]
+            print(f"Processing batch {i//BATCH_SIZE_FOR_KEYWORD_ANALYSIS + 1} with {len(batch)} ideas...")
+            
+            # Clear pending list to avoid mixing with other operations
+            pending_ideas_for_keyword_analysis = []
+            
+            # Add the batch to the pending list
+            pending_ideas_for_keyword_analysis.extend(batch)
+            
+            # Process the batch
+            process_keyword_batch()
+            
+            print(f"Batch {i//BATCH_SIZE_FOR_KEYWORD_ANALYSIS + 1} processed.")
+            
+        print(f"Finished processing all {len(ideas_with_null_metrics)} ideas with null metrics.")
+        
+    except Exception as e:
+        print(f"Error generating missing metrics: {e}")
+
 def run_pipeline():
     """Run the complete Reddit pipeline."""
     fetch_new_comments()
