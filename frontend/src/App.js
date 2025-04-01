@@ -113,55 +113,57 @@ function App() {
               hasAccess={hasAccess} 
               onGetAccess={() => setShowPaymentModal(true)} 
             />
-            <div className="bg-gradient-to-br from-violet-50 via-purple-50 to-fuchsia-50 rounded-lg shadow-sm p-5 border border-violet-200 hover:shadow-md transition-shadow flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="flex -space-x-3">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-indigo-400 flex items-center justify-center">
-                    <img 
-                      src="/images/profile_pic_placeholder1.png" 
-                      alt="" 
-                      className="w-full h-full rounded-full object-cover"
-                      onError={(e) => {
-                        e.target.style.display = 'none';
-                        e.target.parentElement.textContent = '👤';
-                      }}
-                    />
+            <div className="bg-gradient-to-br from-violet-50 via-purple-50 to-fuchsia-50 rounded-lg shadow-sm p-6 border border-violet-200 hover:shadow-md transition-shadow">
+              <div className="flex items-center gap-8">
+                <div className="flex items-center gap-4">
+                  <div className="flex -space-x-4">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-indigo-400 flex items-center justify-center ring-2 ring-white">
+                      <img 
+                        src="/images/profile_pic_placeholder1.png" 
+                        alt="" 
+                        className="w-full h-full rounded-full object-cover"
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                          e.target.parentElement.textContent = '👤';
+                        }}
+                      />
+                    </div>
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-400 to-fuchsia-400 flex items-center justify-center ring-2 ring-white">
+                      <img 
+                        src="/images/profile_pic_placeholder2.png" 
+                        alt="" 
+                        className="w-full h-full rounded-full object-cover"
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                          e.target.parentElement.textContent = '👤';
+                        }}
+                      />
+                    </div>
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-400 to-violet-400 flex items-center justify-center ring-2 ring-white">
+                      <img 
+                        src="/images/profile_pic_placeholder3.png" 
+                        alt="" 
+                        className="w-full h-full rounded-full object-cover"
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                          e.target.parentElement.textContent = '👤';
+                        }}
+                      />
+                    </div>
                   </div>
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-400 to-fuchsia-400 flex items-center justify-center">
-                    <img 
-                      src="/images/profile_pic_placeholder2.png" 
-                      alt="" 
-                      className="w-full h-full rounded-full object-cover"
-                      onError={(e) => {
-                        e.target.style.display = 'none';
-                        e.target.parentElement.textContent = '👤';
-                      }}
-                    />
-                  </div>
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-400 to-violet-400 flex items-center justify-center">
-                    <img 
-                      src="/images/profile_pic_placeholder3.png" 
-                      alt="" 
-                      className="w-full h-full rounded-full object-cover"
-                      onError={(e) => {
-                        e.target.style.display = 'none';
-                        e.target.parentElement.textContent = '👤';
-                      }}
-                    />
+                  <div className="flex items-center">
+                    <span className="text-gray-600 font-medium text-lg">+</span>
+                    <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 ml-1">350</span>
                   </div>
                 </div>
-                <span className="flex items-center gap-1">
-                  <span className="text-gray-600 font-medium">+</span>
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 font-bold">350</span>
-                </span>
-              </div>
-              <div className="text-right">
-                <h2 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 mb-1">
-                  Entrepreneurs Building
-                </h2>
-                <p className="text-sm text-gray-600">
-                  Join our growing community of SaaS founders and developers
-                </p>
+                <div className="flex-1">
+                  <h2 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 mb-1">
+                    Entrepreneurs Building
+                  </h2>
+                  <p className="text-gray-600">
+                    Join our growing community of SaaS founders and developers
+                  </p>
+                </div>
               </div>
             </div>
           </div>

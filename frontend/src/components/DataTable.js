@@ -109,7 +109,8 @@ function DataTable({ data, hasAccess, onGetAccess }) {
                   'Evaluation of Competition', 
                   'Approximated Revenue'].map((header, index) => (
                   <th key={header} className={`px-6 py-4 text-sm font-semibold text-blue-900 uppercase tracking-wider ${
-                    index === 0 ? 'w-[45%]' : 'w-[18.33%]'
+                    index === 0 ? 'w-[45%]' : 
+                    index === 3 ? 'w-[21.33%]' : 'w-[16.83%]'
                   }`}>
                     {header}
                   </th>
@@ -130,7 +131,8 @@ function DataTable({ data, hasAccess, onGetAccess }) {
                   row['Evaluation of Competition'], 
                   row['Approximated Revenue']].map((value, i) => (
                   <td key={i} className={`px-6 py-4 ${
-                    i === 0 ? 'w-[45%]' : 'w-[18.33%]'
+                    i === 0 ? 'w-[45%]' : 
+                    i === 3 ? 'w-[21.33%]' : 'w-[16.83%]'
                   }`}>
                     {i === 0 ? (
                       <div className="relative group">

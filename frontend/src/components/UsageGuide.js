@@ -110,9 +110,6 @@ function UsageGuide() {
           <span className="font-mono text-xs bg-gradient-to-r from-purple-100 to-fuchsia-100 text-purple-700 px-3 py-1.5 rounded-full border border-purple-200 shadow-sm hover:shadow transition-shadow">#VibeCoding</span>
         </div>
       </div>
-
-      {/* Extra Space Filler */}
-      <div className="hidden lg:block h-24"></div>
     </div>
   );
 }
