@@ -39,6 +39,22 @@ services:
     buildCommand: cd frontend && npm install && npm run build
     staticPublishPath: frontend/build
     autoDeploy: true
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: public, max-age=86400
+      - path: /static/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /static/js/*.js
+        name: Content-Type
+        value: application/javascript
+      - path: /static/css/*.css
+        name: Content-Type
+        value: text/css
+      - path: /static/media/*
+        name: Content-Type
+        value: image/svg+xml
     envVars:
       - key: REACT_APP_STRIPE_PUBLISHABLE_KEY
         sync: false
