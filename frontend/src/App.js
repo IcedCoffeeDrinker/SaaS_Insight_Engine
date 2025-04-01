@@ -106,7 +106,34 @@ function App() {
           </div>
         </header>
 
-        <main className="max-w-[1920px] mx-auto px-6 sm:px-8 lg:px-12 py-8">
+        <main className="container mx-auto px-4 py-6">
+          <div className="text-center mb-8">
+            <div className="inline-block">
+              <span className="inline-block bg-gradient-to-r from-blue-100 via-purple-100 to-indigo-100 text-transparent bg-clip-text font-bold px-3 py-1 rounded-full text-sm font-mono mb-4 border border-blue-200 shadow-sm">
+                <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-transparent bg-clip-text">#VibeCoding #AIPowered #SaaS</span>
+              </span>
+            </div>
+            <h1 className="text-4xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 animate-gradient">
+              Bulk SaaS Idea Generator
+            </h1>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-6">
+              Generate profitable SaaS ideas and <span className="font-semibold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-transparent bg-clip-text">vibe code</span> them into reality with AI
+            </p>
+            <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-500 mb-8">
+              <span className="flex items-center bg-white px-3 py-1 rounded-full shadow-sm border border-gray-100">
+                <span className="text-green-500 mr-2">✓</span>
+                Real Google Analytics Data
+              </span>
+              <span className="flex items-center bg-white px-3 py-1 rounded-full shadow-sm border border-gray-100">
+                <span className="text-green-500 mr-2">✓</span>
+                Live Competition Metrics
+              </span>
+              <span className="flex items-center bg-white px-3 py-1 rounded-full shadow-sm border border-gray-100">
+                <span className="text-green-500 mr-2">✓</span>
+                Fresh Ideas from Reddit
+              </span>
+            </div>
+          </div>
           <Routes>
             <Route path="/legal/terms" element={<TermsOfService />} />
             <Route path="/legal/privacy" element={<PrivacyPolicy />} />
