@@ -22,6 +22,10 @@ function App() {
   const [showRestoreModal, setShowRestoreModal] = useState(false);
   const [restoreError, setRestoreError] = useState('');
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   useEffect(() => {
     fetchPreviewData();
     checkAccess();
@@ -83,11 +87,11 @@ function App() {
     <Router>
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
         <header className="bg-white shadow-sm">
-          <div className="max-w-[1920px] mx-auto px-6 sm:px-8 lg:px-12 py-4">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div className="flex justify-between items-center">
-              <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600">
+              <Link to="/" className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600">
                 SaaS Insight Engine
-              </h1>
+              </Link>
               <div className="flex items-center gap-8">
                 <button
                   onClick={() => setShowRestoreModal(true)}
@@ -251,13 +255,13 @@ function App() {
                 © {new Date().getFullYear()} 4houses Ventures UG. All rights reserved.
               </div>
               <div className="flex items-center gap-6 text-sm">
-                <Link to="/legal/terms" className="text-gray-600 hover:text-gray-900">
+                <Link to="/legal/terms" className="text-gray-600 hover:text-gray-900" onClick={scrollToTop}>
                   Terms
                 </Link>
-                <Link to="/legal/privacy" className="text-gray-600 hover:text-gray-900">
+                <Link to="/legal/privacy" className="text-gray-600 hover:text-gray-900" onClick={scrollToTop}>
                   Privacy
                 </Link>
-                <Link to="/legal/refund" className="text-gray-600 hover:text-gray-900">
+                <Link to="/legal/refund" className="text-gray-600 hover:text-gray-900" onClick={scrollToTop}>
                   Refund
                 </Link>
                 <a href="mailto:philipp.haus@icloud.com" className="text-gray-600 hover:text-gray-900">
