@@ -1,22 +1,11 @@
 services:
   - type: web
-    name: saas-insight-api
-    runtime: python
-    region: oregon
-    plan: free
+    name: saas-insight-engine-backend
+    env: python
     buildCommand: pip install -r backend/requirements.txt
-    startCommand: cd backend && gunicorn app:app
+    startCommand: gunicorn backend.app:app
     envVars:
-      - key: FLASK_APP
-        value: app.py
-      - key: FLASK_ENV
-        value: production
-      - key: PYTHONPATH
-        value: .
-      # Add environment variables that need to be set in Render dashboard:
-      - key: STRIPE_PUBLISHABLE_KEY
-        sync: false
-      - key: STRIPE_SECRET_KEY
+      - key: OPENAI_API_KEY
         sync: false
       - key: REDDIT_CLIENT_ID
         sync: false
@@ -24,35 +13,22 @@ services:
         sync: false
       - key: REDDIT_USER_AGENT
         sync: false
-      - key: OPENAI_API_KEY
-        sync: false
       - key: DATAFORSEO_USERNAME
         sync: false
       - key: DATAFORSEO_PASSWORD
         sync: false
-      - key: FRONTEND_URL
-        # This creates a reference to the frontend service URL
-        fromService:
-          type: web
-          name: saas-insight-frontend
-          envVarKey: RENDER_EXTERNAL_URL
-    
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+
   - type: web
-    name: saas-insight-frontend
-    runtime: node
-    region: oregon
-    plan: free
+    name: saas-insight-engine-frontend
+    env: static
     buildCommand: cd frontend && npm install && npm run build
-    startCommand: cd frontend && npx serve -s build
+    staticPublishPath: frontend/build
     envVars:
-      - key: NODE_ENV
-        value: production
-      # Add environment variables that need to be set in Render dashboard:
       - key: REACT_APP_STRIPE_PUBLISHABLE_KEY
         sync: false
       - key: REACT_APP_API_URL
-        # This creates a reference to the backend service URL
-        fromService:
-          type: web
-          name: saas-insight-api
-          envVarKey: RENDER_EXTERNAL_URL 
+        sync: false 

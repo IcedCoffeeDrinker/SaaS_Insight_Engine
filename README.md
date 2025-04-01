@@ -5,9 +5,9 @@ A data-driven platform that helps entrepreneurs identify profitable SaaS opportu
 ## Features
 
 - 💡 **SaaS Opportunity Database**: Curated list of validated SaaS ideas
-- 📊 **Market Metrics**: Monthly search volumes and competition analysis
+- 📊 **Market Metrics**: Monthly search volumes and competition analysis via DataForSEO
 - 💰 **Revenue Estimates**: Projected monthly revenue potential
-- 🔄 **Regular Updates**: Fresh opportunities added continuously
+- 🔄 **Regular Updates**: Fresh opportunities added continuously from Reddit discussions
 
 ## Tech Stack
 
@@ -15,6 +15,9 @@ A data-driven platform that helps entrepreneurs identify profitable SaaS opportu
 - Python 3.11+
 - Flask
 - Stripe Payment Integration
+- DataForSEO API (for keyword metrics)
+- OpenAI API (for idea generation)
+- Reddit API (for data collection)
 
 ### Frontend
 - React 18
@@ -25,7 +28,22 @@ A data-driven platform that helps entrepreneurs identify profitable SaaS opportu
 
 1. Clone the repository
 2. Follow setup instructions in `doc/run_local_workflow.txt`
-3. Set up your Stripe API keys in `.env` (also create a `.env` file under `frontend/` with the public key)
+3. Set up your environment variables in `.env`:
+   ```
+   # Backend .env
+   OPENAI_API_KEY=your_openai_key
+   REDDIT_CLIENT_ID=your_reddit_client_id
+   REDDIT_CLIENT_SECRET=your_reddit_client_secret
+   REDDIT_USER_AGENT=your_user_agent
+   DATAFORSEO_USERNAME=your_dataforseo_username
+   DATAFORSEO_PASSWORD=your_dataforseo_password
+   STRIPE_SECRET_KEY=your_stripe_secret_key
+   STRIPE_WEBHOOK_SECRET=your_stripe_webhook_secret
+
+   # Frontend .env
+   REACT_APP_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
+   REACT_APP_API_URL=your_api_url  # Optional, defaults to http://localhost:5000
+   ```
 
 ## Local Development
 
@@ -41,6 +59,12 @@ This project is ready for deployment on Render:
 4. Deploy both backend and frontend services
 
 For detailed deployment instructions, see `doc/render_deployment.md`.
+
+## API Rate Limits
+
+- DataForSEO: 15,000 API operations per day in free tier
+- Reddit API: 100 QPM per OAuth client ID
+- OpenAI API: Varies by model and plan
 
 ## License
 

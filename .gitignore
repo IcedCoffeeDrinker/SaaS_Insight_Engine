@@ -221,6 +221,8 @@ frontend/.env.production.local
 
 # Data files
 data/users.json
+data/SaaS_ideas.json
+data/csv/*.csv
 
 # OS specific
 .DS_Store
@@ -249,5 +251,10 @@ backend/google_ads_credentials.json
 google_ads_credentials.json
 *-bdb79dbcff29.json
 jupyter-391421-*.json
+
+# API credentials
+*.json
+!package.json
+!package-lock.json
 
 
