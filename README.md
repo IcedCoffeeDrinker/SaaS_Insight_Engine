@@ -49,16 +49,53 @@ A data-driven platform that helps entrepreneurs identify profitable SaaS opportu
 
 See `doc/run_local_workflow.txt` for detailed setup and running instructions.
 
-## Deployment
+## Deployment on Render
 
-This project is ready for deployment on Render:
+This project is configured for immediate deployment on Render using its Blueprint feature:
 
-1. Push your code to GitHub
-2. Connect your repository to Render using the `render.yaml` Blueprint
-3. Set up environment variables in the Render dashboard
-4. Deploy both backend and frontend services
+### One-Click Deployment
 
-For detailed deployment instructions, see `doc/render_deployment.md`.
+1. Fork this repository to your GitHub account
+2. Log in to [Render](https://render.com)
+3. Click "New" and select "Blueprint"
+4. Connect your GitHub account and select this repository
+5. Render will automatically detect the `render.yaml` configuration
+6. Fill in the required environment variables:
+   - `STRIPE_SECRET_KEY` and `STRIPE_PUBLISHABLE_KEY` for payments
+   - `OPENAI_API_KEY` for AI processing
+   - `REDDIT_CLIENT_ID`, `REDDIT_CLIENT_SECRET`, and `REDDIT_USER_AGENT` for Reddit integration
+   - `DATAFORSEO_USERNAME` and `DATAFORSEO_PASSWORD` for keyword metrics
+
+### Deployment Architecture
+
+The `render.yaml` file configures two services:
+
+1. **Backend** (`saas-insight-engine-backend`):
+   - Python Flask API
+   - Persistent disk (1GB) for data storage
+   - Starter plan for always-on availability
+
+2. **Frontend** (`saas-insight-engine-frontend`):
+   - Static site hosting
+   - Built with React and Tailwind
+   - Optimized for performance
+
+### First-Time Setup After Deployment
+
+After the first deployment:
+
+1. Access the backend service in Render dashboard
+2. Enter the shell environment
+3. Verify data folders are properly initialized
+4. The backend will automatically copy initial data files to the persistent disk
+
+### Monitoring and Maintenance
+
+- Set up Render alerts for performance and uptime monitoring
+- Regularly back up the persistent disk data
+- Check API usage to stay within rate limits
+
+For more detailed deployment information, see `doc/render_deployment.md`.
 
 ## API Rate Limits
 
