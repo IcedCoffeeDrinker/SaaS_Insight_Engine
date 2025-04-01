@@ -99,16 +99,18 @@ function DataTable({ data, hasAccess, onGetAccess }) {
 
   return (
     <div className="space-y-8">
-      <div className="relative overflow-x-auto shadow-md rounded-lg">
-        <table className="w-full text-left">
+      <div className="relative overflow-hidden shadow-md rounded-lg">
+        <table className="w-full text-left table-fixed">
           <thead className="bg-blue-50">
             {data[0] && (
               <tr>
                 {['SaaS Niche', 
                   'Monthly Keyword Searches', 
                   'Evaluation of Competition', 
-                  'Approximated Revenue'].map((header) => (
-                  <th key={header} className="px-6 py-4 text-sm font-semibold text-blue-900 uppercase tracking-wider">
+                  'Approximated Revenue'].map((header, index) => (
+                  <th key={header} className={`px-6 py-4 text-sm font-semibold text-blue-900 uppercase tracking-wider ${
+                    index === 0 ? 'w-[45%]' : 'w-[18.33%]'
+                  }`}>
                     {header}
                   </th>
                 ))}
@@ -127,12 +129,16 @@ function DataTable({ data, hasAccess, onGetAccess }) {
                   row['Monthly Keyword Searches'], 
                   row['Evaluation of Competition'], 
                   row['Approximated Revenue']].map((value, i) => (
-                  <td key={i} className="px-6 py-4 whitespace-nowrap">
+                  <td key={i} className={`px-6 py-4 ${
+                    i === 0 ? 'w-[45%]' : 'w-[18.33%]'
+                  }`}>
                     {i === 0 ? (
-                      <span className="text-gray-500">{value}</span>
+                      <div className="relative group">
+                        <span className="text-gray-500 truncate block" title={value}>{value}</span>
+                      </div>
                     ) : i === 1 ? (
                       <div className="relative">
-                        <span className="text-green-600 font-medium">{value}</span>
+                        <span className="text-green-600 font-medium whitespace-nowrap">{value}</span>
                         {index === hoveredRow && descriptions[row['SaaS Niche']] && (
                           <div
                             ref={tooltipRef}
@@ -143,7 +149,7 @@ function DataTable({ data, hasAccess, onGetAccess }) {
                         )}
                       </div>
                     ) : i === 2 ? (
-                      <span className={`px-3 py-1 rounded-full text-sm font-medium
+                      <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium whitespace-nowrap
                         ${value === 'High' ? 'bg-red-100 text-red-800' : 
                           value === 'Moderate' ? 'bg-yellow-100 text-yellow-800' : 
                           value === 'Low' ? 'bg-teal-100 text-teal-800' :
@@ -151,9 +157,9 @@ function DataTable({ data, hasAccess, onGetAccess }) {
                         {value}
                       </span>
                     ) : i === 3 ? (
-                      <span className="text-blue-600 font-medium">{value}</span>
+                      <span className="text-blue-600 font-medium whitespace-nowrap">{value}</span>
                     ) : (
-                      <span className="text-gray-500">{value}</span>
+                      <span className="text-gray-500 whitespace-nowrap">{value}</span>
                     )}
                   </td>
                 ))}
