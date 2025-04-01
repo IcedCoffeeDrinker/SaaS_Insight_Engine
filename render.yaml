@@ -2,7 +2,7 @@ services:
   - type: web
     name: saas-insight-engine-backend
     env: python
-    plan: free
+    plan: starter
     buildCommand: pip install -r backend/requirements.txt
     startCommand: gunicorn backend.app:app
     healthCheckPath: /api/health
@@ -36,7 +36,7 @@ services:
   - type: web
     name: saas-insight-engine-frontend
     env: static
-    plan: free
+    plan: starter
     buildCommand: cd frontend && npm install && npm run build
     staticPublishPath: frontend/build
     autoDeploy: true
