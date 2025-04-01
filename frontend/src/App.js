@@ -16,6 +16,7 @@ function App() {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [hasAccess, setHasAccess] = useState(false);
   const [showRestoreModal, setShowRestoreModal] = useState(false);
+  const [restoreError, setRestoreError] = useState('');
 
   useEffect(() => {
     fetchPreviewData();
@@ -61,9 +62,10 @@ function App() {
       localStorage.setItem('userEmail', email);
       setHasAccess(true);
       setShowRestoreModal(false);
-      
-      // Refresh the data after successful restoration
+      setRestoreError('');
       fetchPreviewData();
+    } else {
+      setRestoreError('This email is not registered. Please check your email or purchase access.');
     }
   };
 
@@ -104,16 +106,52 @@ function App() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-1 flex flex-col">
             <UsageGuide />
+            {hasAccess && (
+              <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 rounded-lg shadow-sm p-6 border border-blue-200 hover:shadow-md transition-shadow mt-8 flex-1">
+                <div className="flex flex-col h-full">
+                  <div className="mb-4">
+                    <span className="inline-block bg-gradient-to-r from-blue-100 via-purple-100 to-indigo-100 text-transparent bg-clip-text font-bold px-3 py-1 rounded-full text-sm font-mono border border-blue-200 shadow-sm">
+                      <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-transparent bg-clip-text">Coming Soon</span>
+                    </span>
+                  </div>
+                  <h2 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 mb-3">
+                    Vibe Coding Template Generator
+                  </h2>
+                  <p className="text-gray-600 mb-4">
+                    Generate vibe-code ready templates for no-code platforms like Manus and Bubble. Each template is optimized for creating full SaaS products.
+                  </p>
+                  <ul className="space-y-2 mb-4 text-gray-600">
+                    <li className="flex items-start">
+                      <span className="text-blue-500 mr-2">⚡</span>
+                      Platform-specific templates
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-purple-500 mr-2">🎨</span>
+                      Pre-configured UI flows
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-indigo-500 mr-2">🔧</span>
+                      Database structure templates
+                    </li>
+                  </ul>
+                  <div className="text-sm text-gray-500">
+                    Monthly generation quota included
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
-          <div className="lg:col-span-2 space-y-8">
-            <DataTable 
-              data={previewData} 
-              hasAccess={hasAccess} 
-              onGetAccess={() => setShowPaymentModal(true)} 
-            />
-            <div className="bg-gradient-to-br from-violet-50 via-purple-50 to-fuchsia-50 rounded-lg shadow-sm p-6 border border-violet-200 hover:shadow-md transition-shadow">
+          <div className="lg:col-span-2 flex flex-col">
+            <div className="flex-1">
+              <DataTable 
+                data={previewData} 
+                hasAccess={hasAccess} 
+                onGetAccess={() => setShowPaymentModal(true)} 
+              />
+            </div>
+            <div className="bg-gradient-to-br from-violet-50 via-purple-50 to-fuchsia-50 rounded-lg shadow-sm p-6 border border-violet-200 hover:shadow-md transition-shadow mt-8">
               <div className="flex items-center gap-8">
                 <div className="flex items-center gap-4">
                   <div className="flex -space-x-4">
@@ -197,10 +235,18 @@ function App() {
                   className="w-full p-2 border rounded mb-4"
                   required
                 />
+                {restoreError && (
+                  <div className="text-red-600 text-sm mb-4">
+                    {restoreError}
+                  </div>
+                )}
                 <div className="flex justify-end gap-4">
                   <button
                     type="button"
-                    onClick={() => setShowRestoreModal(false)}
+                    onClick={() => {
+                      setShowRestoreModal(false);
+                      setRestoreError('');
+                    }}
                     className="px-4 py-2 text-gray-600 hover:text-gray-800"
                   >
                     Cancel

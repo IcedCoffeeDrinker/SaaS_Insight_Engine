@@ -105,9 +105,9 @@ function DataTable({ data, hasAccess, onGetAccess }) {
             {data[0] && (
               <tr>
                 {['SaaS Niche', 
-                  'Monthly Keyword Searches', 
-                  'Evaluation of Competition', 
-                  'Approximated Revenue'].map((header, index) => (
+                  'Monthly searches', 
+                  'Competition', 
+                  'Revenue Guess'].map((header, index) => (
                   <th key={header} className={`px-6 py-4 text-sm font-semibold text-blue-900 uppercase tracking-wider ${
                     index === 0 ? 'w-[45%]' : 
                     index === 3 ? 'w-[21.33%]' : 'w-[16.83%]'
