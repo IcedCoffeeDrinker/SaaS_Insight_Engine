@@ -15,10 +15,38 @@ function UsageGuide() {
           Transform ideas into reality with modern no-code & AI tools:
         </p>
         <div className="flex flex-wrap gap-2 mb-3">
-          <span className="font-mono text-xs bg-gradient-to-r from-blue-100 to-blue-200 text-blue-700 px-3 py-1.5 rounded-full border border-blue-200 shadow-sm hover:shadow transition-shadow">#ManusAI</span>
-          <span className="font-mono text-xs bg-gradient-to-r from-green-100 to-green-200 text-green-700 px-3 py-1.5 rounded-full border border-green-200 shadow-sm hover:shadow transition-shadow">#Glide</span>
-          <span className="font-mono text-xs bg-gradient-to-r from-purple-100 to-purple-200 text-purple-700 px-3 py-1.5 rounded-full border border-purple-200 shadow-sm hover:shadow transition-shadow">#Pory</span>
-          <span className="font-mono text-xs bg-gradient-to-r from-orange-100 to-orange-200 text-orange-700 px-3 py-1.5 rounded-full border border-orange-200 shadow-sm hover:shadow transition-shadow">#Bubble</span>
+          <a 
+            href="https://www.manus.ai/" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="font-mono text-xs bg-gradient-to-r from-blue-100 to-blue-200 text-blue-700 px-3 py-1.5 rounded-full border border-blue-200 hover:border-blue-300 shadow-sm hover:shadow-md transition-all duration-200"
+          >
+            #ManusAI
+          </a>
+          <a 
+            href="https://www.glideapps.com/" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="font-mono text-xs bg-gradient-to-r from-green-100 to-green-200 text-green-700 px-3 py-1.5 rounded-full border border-green-200 hover:border-green-300 shadow-sm hover:shadow-md transition-all duration-200"
+          >
+            #Glide
+          </a>
+          <a 
+            href="https://pory.io/" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="font-mono text-xs bg-gradient-to-r from-purple-100 to-purple-200 text-purple-700 px-3 py-1.5 rounded-full border border-purple-200 hover:border-purple-300 shadow-sm hover:shadow-md transition-all duration-200"
+          >
+            #Pory
+          </a>
+          <a 
+            href="https://bubble.io/" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="font-mono text-xs bg-gradient-to-r from-orange-100 to-orange-200 text-orange-700 px-3 py-1.5 rounded-full border border-orange-200 hover:border-orange-300 shadow-sm hover:shadow-md transition-all duration-200"
+          >
+            #Bubble
+          </a>
         </div>
         <p className="text-xs text-gray-500 italic">
           Recommended tools for rapid prototyping & deployment
