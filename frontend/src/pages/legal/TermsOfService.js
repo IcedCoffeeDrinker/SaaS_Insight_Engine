@@ -53,7 +53,7 @@ function TermsOfService() {
         <section>
           <h2 className="text-xl font-semibold text-gray-800 mb-3">5. Intellectual Property</h2>
           <p>
-            All content, features, and functionality of the Service, including but not limited to text, graphics, logos, and software, are the exclusive property of Boulevard Inc. and are protected by international copyright, trademark, and other intellectual property laws.
+            All content, features, and functionality of the Service, including but not limited to text, graphics, logos, and software, are the exclusive property of 4houses Ventures UG and are protected by international copyright, trademark, and other intellectual property laws.
           </p>
         </section>
 
@@ -78,7 +78,7 @@ function TermsOfService() {
           </p>
           <p className="mt-2">
             Email: philipp.haus@icloud.com<br />
-            Company: Boulevard Inc.
+            Company: 4houses Ventures UG
           </p>
         </section>
 

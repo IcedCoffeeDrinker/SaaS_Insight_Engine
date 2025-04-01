@@ -75,7 +75,7 @@ function RefundPolicy() {
           </p>
           <p className="mt-2">
             Email: philipp.haus@icloud.com<br />
-            Company: Boulevard Inc.
+            Company: 4houses Ventures UG
           </p>
         </section>
 

@@ -9,7 +9,7 @@ function PrivacyPolicy() {
         <section>
           <h2 className="text-xl font-semibold text-gray-800 mb-3">1. Introduction</h2>
           <p>
-            This Privacy Policy explains how Boulevard Inc. ("we", "us", or "our") collects, uses, and protects your personal information when you use the SaaS Insight Engine ("the Service").
+            This Privacy Policy explains how 4houses Ventures UG ("we", "us", or "our") collects, uses, and protects your personal information when you use the SaaS Insight Engine ("the Service").
           </p>
         </section>
 
@@ -86,7 +86,7 @@ function PrivacyPolicy() {
           </p>
           <p className="mt-2">
             Email: philipp.haus@icloud.com<br />
-            Company: Boulevard Inc.
+            Company: 4houses Ventures UG
           </p>
         </section>
 
