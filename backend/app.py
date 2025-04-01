@@ -15,7 +15,17 @@ app = Flask(__name__)
 # For local development: http://localhost:3000
 # For production: get from env var or default to Render URL
 frontend_url = os.getenv('FRONTEND_URL', 'https://saas-insight-frontend.onrender.com')
-CORS(app, resources={r"/api/*": {"origins": [frontend_url, "http://localhost:3000"]}})
+additional_origins = os.getenv('ADDITIONAL_CORS_ORIGINS', '')
+allowed_origins = [frontend_url, "http://localhost:3000"]
+
+# Add any additional origins if they exist
+if additional_origins:
+    for origin in additional_origins.split(','):
+        origin = origin.strip()
+        if origin and origin not in allowed_origins:
+            allowed_origins.append(origin)
+
+CORS(app, resources={r"/api/*": {"origins": allowed_origins}})
 
 # Configure Stripe
 stripe.api_key = os.getenv('STRIPE_SECRET_KEY')
