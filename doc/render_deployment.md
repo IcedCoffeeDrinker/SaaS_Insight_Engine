@@ -7,6 +7,7 @@ This guide explains how to deploy the SaaS Insight Engine to Render's cloud plat
 1. A [Render account](https://render.com)
 2. Your code pushed to a GitHub repository
 3. API keys for required services (Stripe, OpenAI, etc.)
+4. Starter plan subscription ($7/month per service)
 
 ## Deployment Process
 
@@ -24,10 +25,10 @@ The project includes a `render.yaml` file that defines both the backend and fron
 
 The `render.yaml` file includes placeholders for all required environment variables. During the deployment process, Render will prompt you to provide values for the following variables marked with `sync: false`:
 
-#### For the backend service (saas-insight-api):
+#### For the backend service (saas-insight-engine-backend):
 
 - `STRIPE_SECRET_KEY` - Your Stripe secret key
-- `STRIPE_PUBLISHABLE_KEY` - Your Stripe publishable key
+- `STRIPE_WEBHOOK_SECRET` - Your Stripe webhook secret
 - `REDDIT_CLIENT_ID` - Your Reddit API client ID
 - `REDDIT_CLIENT_SECRET` - Your Reddit API client secret
 - `REDDIT_USER_AGENT` - Your Reddit API user agent
@@ -35,60 +36,73 @@ The `render.yaml` file includes placeholders for all required environment variab
 - `DATAFORSEO_USERNAME` - Your DataForSEO username
 - `DATAFORSEO_PASSWORD` - Your DataForSEO password
 
-The `FRONTEND_URL` will be automatically set to your frontend service's URL.
-
-#### For the frontend service (saas-insight-frontend):
+#### For the frontend service (saas-insight-engine-frontend):
 
 - `REACT_APP_STRIPE_PUBLISHABLE_KEY` - Your Stripe publishable key
-
-The `REACT_APP_API_URL` will be automatically set to your backend service's URL.
+- `REACT_APP_API_URL` - Your backend service URL
 
 ### 3. Deploy Your Services
 
-Render will automatically deploy your services based on the configuration in `render.yaml`. You can monitor the build progress in the Render dashboard.
+1. Select the "Starter" plan for both services
+2. Render will automatically deploy your services based on the configuration in `render.yaml`
+3. Monitor the build progress in the Render dashboard
 
 ### 4. Verify the Deployment
 
 Once both services are deployed:
 
-1. Visit your frontend URL (e.g., https://saas-insight-frontend.onrender.com)
+1. Visit your frontend URL (e.g., https://saas-insight-engine-frontend.onrender.com)
 2. Test the functionality to ensure everything is working correctly
 3. Check the logs for any errors if you encounter issues
 
-## Plan Considerations
+## Production Considerations
 
-### Free Tier Limitations
+### Starter Plan Benefits
 
-The free tier of Render will work for:
-- Initial deployment and testing
-- Demonstration purposes
-- Low traffic situations
+The Starter plan ($7/month per service) provides:
+- Always-on services (no sleep after inactivity)
+- Increased CPU and memory resources
+- Better performance for your users
+- More reliable data processing
 
-However, be aware of these limitations:
-1. **No persistent disk storage** - files written to disk (like your JSON data and user files) don't persist between deployments
-2. **Limited compute resources** - may result in slower performance
-3. **Sleep after inactivity** - your service will spin down after periods of inactivity (15 minutes)
+### Data Storage
 
-### Recommendations for Production
+With the Starter plan:
+1. Create a persistent disk for the backend service to store:
+   - User data
+   - Generated SaaS ideas
+   - CSV files
+2. Configure automatic backups
+3. Monitor disk usage
 
-For a production deployment, consider upgrading to:
-- **Starter Plan ($7/month per service)**: Includes always-on services, more CPU/memory
-- **Pro Plan ($15/month per service)**: Includes persistent disk storage and more resources
+#### Important: SaaS Ideas Data
 
-## File Storage Considerations
+The `data/SaaS_ideas.json` file in the repository is a placeholder. For production:
+1. Create a new `SaaS_ideas.json` file in the production environment
+2. Initialize it with your initial dataset
+3. The file will be automatically backed up with the persistent disk
+4. New ideas will be added through the Reddit pipeline
 
-Render's free tier doesn't include persistent storage between deployments. For production use, consider these options:
+### Monitoring and Maintenance
 
-### Option 1: Using Render Disk (Requires Pro Plan)
+1. Set up logging and monitoring:
+   - Enable Render's built-in logging
+   - Monitor API rate limits
+   - Track error rates and performance metrics
 
-Upgrade to the Pro plan to access persistent disk storage.
+2. Regular maintenance tasks:
+   - Update dependencies regularly
+   - Monitor API usage and costs
+   - Backup data regularly
+   - Review and optimize performance
 
-### Option 2: Cloud Storage Integration
+### Security Considerations
 
-Modify the application to store data in a cloud storage service:
-
-1. **For user data**: Store user information in a database like MongoDB Atlas
-2. **For JSON files**: Store data in cloud storage (AWS S3, Google Cloud Storage)
+1. Enable HTTPS for all services
+2. Set up proper CORS configuration
+3. Implement rate limiting
+4. Monitor for suspicious activity
+5. Keep all dependencies updated
 
 ## Troubleshooting
 

@@ -222,7 +222,10 @@ frontend/.env.production.local
 # Data files
 data/users.json
 data/SaaS_ideas.json
+data/SaaS_ideas.*.json
 data/csv/*.csv
+data/*.json
+!data/SaaS_ideas.json.example
 
 # OS specific
 .DS_Store

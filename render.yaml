@@ -2,8 +2,11 @@ services:
   - type: web
     name: saas-insight-engine-backend
     env: python
+    plan: starter
     buildCommand: pip install -r backend/requirements.txt
     startCommand: gunicorn backend.app:app
+    healthCheckPath: /api/health
+    autoDeploy: true
     envVars:
       - key: OPENAI_API_KEY
         sync: false
@@ -21,14 +24,20 @@ services:
         sync: false
       - key: STRIPE_WEBHOOK_SECRET
         sync: false
+      - key: NODE_ENV
+        value: production
 
   - type: web
     name: saas-insight-engine-frontend
     env: static
+    plan: starter
     buildCommand: cd frontend && npm install && npm run build
     staticPublishPath: frontend/build
+    autoDeploy: true
     envVars:
       - key: REACT_APP_STRIPE_PUBLISHABLE_KEY
         sync: false
       - key: REACT_APP_API_URL
-        sync: false 
+        sync: false
+      - key: NODE_ENV
+        value: production 
