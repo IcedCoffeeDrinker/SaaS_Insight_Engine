@@ -33,9 +33,9 @@ services:
       - key: FRONTEND_URL
         value: https://saas-insight-engine-frontend.onrender.com
 
-  - type: static
+  - type: web
     name: saas-insight-engine-frontend
-    env: static
+    runtime: static
     buildCommand: cd frontend && npm install && npm run build
     staticPublishPath: frontend/build
     autoDeploy: true
