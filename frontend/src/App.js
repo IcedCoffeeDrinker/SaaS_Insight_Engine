@@ -83,26 +83,30 @@ function App() {
     <Router>
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
         <header className="bg-white shadow-sm">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="max-w-[1920px] mx-auto px-6 sm:px-8 lg:px-12 py-4">
             <div className="flex justify-between items-center">
               <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600">
                 SaaS Insight Engine
               </h1>
-              <div className="flex items-center gap-4">
-                {!hasAccess && (
-                  <button
-                    onClick={() => setShowPaymentModal(true)}
-                    className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white px-4 py-2 rounded-lg hover:opacity-90 transition-opacity text-sm font-medium"
-                  >
-                    Get Access
-                  </button>
-                )}
+              <div className="flex items-center gap-8">
+                <button
+                  onClick={() => setShowRestoreModal(true)}
+                  className="bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-600 px-6 py-2 rounded-lg hover:from-blue-100 hover:to-indigo-100 transition-all font-medium border border-blue-200 shadow-sm"
+                >
+                  Restore Access
+                </button>
+                <button
+                  onClick={() => setShowPaymentModal(true)}
+                  className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white px-8 py-2.5 rounded-lg hover:opacity-90 transition-all font-medium shadow-md text-base"
+                >
+                  Get Access
+                </button>
               </div>
             </div>
           </div>
         </header>
 
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <main className="max-w-[1920px] mx-auto px-6 sm:px-8 lg:px-12 py-8">
           <Routes>
             <Route path="/legal/terms" element={<TermsOfService />} />
             <Route path="/legal/privacy" element={<PrivacyPolicy />} />
@@ -145,14 +149,14 @@ function App() {
                       </div>
                     </div>
                   )}
-                </div>
+        </div>
                 <div className="lg:col-span-2 flex flex-col">
                   <div className="flex-1">
-                    <DataTable 
-                      data={previewData} 
-                      hasAccess={hasAccess} 
-                      onGetAccess={() => setShowPaymentModal(true)} 
-                    />
+        <DataTable 
+          data={previewData} 
+          hasAccess={hasAccess} 
+          onGetAccess={() => setShowPaymentModal(true)} 
+        />
                   </div>
                   <div className="bg-gradient-to-br from-violet-50 via-purple-50 to-fuchsia-50 rounded-lg shadow-sm p-6 border border-violet-200 hover:shadow-md transition-shadow mt-8">
                     <div className="flex items-center gap-8">
@@ -214,15 +218,12 @@ function App() {
         </main>
 
         <footer className="border-t border-gray-200 mt-12 py-6">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-[1920px] mx-auto px-6 sm:px-8 lg:px-12">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
               <div className="text-gray-600 text-sm">
-                © {new Date().getFullYear()} Boulevard Inc. All rights reserved.
+                © {new Date().getFullYear()} 4houses Ventures UG. All rights reserved.
               </div>
               <div className="flex items-center gap-6 text-sm">
-                <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-gray-900">
-                  GitHub
-                </a>
                 <Link to="/legal/terms" className="text-gray-600 hover:text-gray-900">
                   Terms
                 </Link>
@@ -276,13 +277,13 @@ function App() {
                       setShowRestoreModal(false);
                       setRestoreError('');
                     }}
-                    className="px-4 py-2 text-gray-600 hover:text-gray-800"
+                    className="px-6 py-2.5 text-gray-600 hover:text-gray-800 font-medium"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
+                    className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white px-8 py-2.5 rounded-lg hover:opacity-90 transition-all font-medium shadow-md"
                   >
                     Restore
                   </button>
@@ -291,7 +292,7 @@ function App() {
             </div>
           </div>
         )}
-      </div>
+    </div>
     </Router>
   );
 }

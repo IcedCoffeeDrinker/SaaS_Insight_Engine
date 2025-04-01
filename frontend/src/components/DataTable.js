@@ -215,13 +215,16 @@ function DataTable({ data, hasAccess, onGetAccess }) {
       </div>
       
       {!hasAccess && (
-        <div className="flex justify-center">
+        <div className="flex flex-col items-center gap-2">
           <button
             onClick={onGetAccess}
-            className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors text-lg"
+            className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white px-8 py-2.5 rounded-lg hover:opacity-90 transition-all font-medium shadow-md text-base"
           >
             Get Full Access Now
           </button>
+          <p className="text-sm text-gray-500">
+            One-time payment, lifetime access to all opportunities
+          </p>
         </div>
       )}
     </div>
