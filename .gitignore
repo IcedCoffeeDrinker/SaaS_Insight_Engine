@@ -260,4 +260,10 @@ jupyter-391421-*.json
 !package.json
 !package-lock.json
 
+# Ignore message composer file
+message_composer.md
+
+# Ignore saas-engine rules file
+@saas-engine-rules.mdc
+
 
