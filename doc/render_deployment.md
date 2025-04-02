@@ -27,19 +27,32 @@ The `render.yaml` file includes placeholders for all required environment variab
 
 #### For the backend service (saas-insight-engine-backend):
 
-- `STRIPE_SECRET_KEY` - Your Stripe secret key
-- `STRIPE_WEBHOOK_SECRET` - Your Stripe webhook secret
-- `REDDIT_CLIENT_ID` - Your Reddit API client ID
-- `REDDIT_CLIENT_SECRET` - Your Reddit API client secret
-- `REDDIT_USER_AGENT` - Your Reddit API user agent
-- `OPENAI_API_KEY` - Your OpenAI API key
-- `DATAFORSEO_USERNAME` - Your DataForSEO username
-- `DATAFORSEO_PASSWORD` - Your DataForSEO password
+- **Stripe:**
+  - `STRIPE_SECRET_KEY` - Your Stripe secret key
+  - `STRIPE_WEBHOOK_SECRET` - Your Stripe webhook signing secret (Get this after creating the webhook endpoint in Stripe Dashboard)
+- **Reddit API:**
+  - `REDDIT_CLIENT_ID` - Your Reddit API client ID
+  - `REDDIT_CLIENT_SECRET` - Your Reddit API client secret
+  - `REDDIT_USER_AGENT` - Your Reddit API user agent
+- **OpenAI API:**
+  - `OPENAI_API_KEY` - Your OpenAI API key
+- **DataForSEO:**
+  - `DATAFORSEO_USERNAME` - Your DataForSEO username
+  - `DATAFORSEO_PASSWORD` - Your DataForSEO password
+- **Authentication & Security:**
+  - `JWT_SECRET_KEY` - Secure random string for signing JWTs (e.g., generate with `openssl rand -hex 32`)
+- **Email (for Password Reset):**
+  - `MAIL_SERVER` - e.g., `smtp.gmail.com`
+  - `MAIL_PORT` - e.g., `587`
+  - `MAIL_USE_TLS` - `True` or `False`
+  - `MAIL_USERNAME` - Your email address
+  - `MAIL_PASSWORD` - Your email password or App Password (recommended for Gmail with 2FA)
+  - `MAIL_DEFAULT_SENDER` - The email address displayed as the sender
 
 #### For the frontend service (saas-insight-engine-frontend):
 
 - `REACT_APP_STRIPE_PUBLISHABLE_KEY` - Your Stripe publishable key
-- `REACT_APP_API_URL` - Your backend service URL
+- `REACT_APP_API_URL` - This should be automatically set by Render to your backend service URL (e.g., `https://saas-insight-engine-backend.onrender.com`)
 
 ### 3. Deploy Your Services
 
@@ -52,8 +65,12 @@ The `render.yaml` file includes placeholders for all required environment variab
 Once both services are deployed:
 
 1. Visit your frontend URL (e.g., https://saas-insight-engine-frontend.onrender.com)
-2. Test the functionality to ensure everything is working correctly
-3. Check the logs for any errors if you encounter issues
+2. **Configure Stripe Webhook**: Go to your Stripe Dashboard -> Developers -> Webhooks. Add an endpoint pointing to `YOUR_BACKEND_URL/api/webhook` (e.g., `https://saas-insight-engine-backend.onrender.com/api/webhook`). Select the event `payment_intent.succeeded`. Copy the generated Webhook Signing Secret and add it as the `STRIPE_WEBHOOK_SECRET` environment variable in Render for the backend service.
+3. Test user registration and login.
+4. Test the payment process.
+5. Verify that access is granted *after* the payment is successfully processed (check the data table or access-restricted features).
+6. Test password reset functionality.
+7. Check the logs for any errors if you encounter issues.
 
 ## Production Considerations
 
@@ -98,25 +115,25 @@ The `data/SaaS_ideas.json` file in the repository is a placeholder. For producti
 
 ### Security Considerations
 
-1. Enable HTTPS for all services
-2. Set up proper CORS configuration
-3. Implement rate limiting
-4. Monitor for suspicious activity
-5. Keep all dependencies updated
+1. Enable HTTPS for all services (handled by Render)
+2. Set up proper CORS configuration (handled in `app.py` and `render.yaml`)
+3. Implement rate limiting (handled by Flask-Limiter in `app.py`)
+4. Use strong secrets for `JWT_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET`.
+5. Use App Passwords for `MAIL_PASSWORD` if using Gmail with 2FA.
+6. Monitor for suspicious activity (check logs).
+7. Keep all dependencies updated.
 
 ## Troubleshooting
 
 ### Common Issues
 
-1. **CORS Errors**: If you see CORS errors, verify that your backend CORS configuration includes your frontend URL.
-
-2. **Environment Variables**: Double-check all environment variables are correctly set in the Render dashboard.
-
-3. **Build Errors**: 
-   - Check build logs for specific errors
-   - Ensure all dependencies are correctly specified in requirements.txt and package.json
-
-4. **API Connection Issues**: Verify that your frontend is correctly configured to access the backend API URL.
+1.  **CORS Errors**: Verify backend `FRONTEND_URL` and `ADDITIONAL_CORS_ORIGINS` env vars in Render match your frontend URL(s).
+2.  **Environment Variables**: Double-check all required environment variables (`STRIPE_*`, `JWT_SECRET_KEY`, `MAIL_*`, etc.) are correctly set in the Render dashboard for the backend service, and `REACT_APP_STRIPE_PUBLISHABLE_KEY` for the frontend.
+3.  **Build Errors**: Check build logs. Ensure `backend/requirements.txt` and `frontend/package.json` are correct.
+4.  **API Connection Issues**: Ensure frontend `REACT_APP_API_URL` points to the correct backend URL.
+5.  **Authentication Issues**: Check `JWT_SECRET_KEY` is set. Ensure frontend sends `Authorization: Bearer <token>` header. Check backend logs for JWT errors.
+6.  **Payment Issues**: Verify Stripe keys (`_SECRET_KEY`, `_PUBLISHABLE_KEY`) are correct. Check Stripe dashboard logs. Ensure `STRIPE_WEBHOOK_SECRET` matches the one in Stripe dashboard and Render env vars. Ensure the webhook endpoint is correctly configured in Stripe and points to the live backend URL + `/api/webhook`.
+7.  **Password Reset Email Issues**: Check `MAIL_*` environment variables. Ensure the email provider allows SMTP access. Check sender email's spam folder.
 
 ### Getting Help
 

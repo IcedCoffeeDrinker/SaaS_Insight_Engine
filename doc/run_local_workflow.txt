@@ -51,11 +51,17 @@ npm install
 # Copy .env.example to .env in project root
 cp ../.env.example ../.env
 # Edit .env with your API keys
+# Make sure to include:
+# - Stripe Keys (Secret, Publishable, Webhook Secret)
+# - API Keys (OpenAI, Reddit, DataForSEO)
+# - JWT Secret Key (generate one using 'openssl rand -hex 32')
+# - Mail Server details (Server, Port, TLS, Username, Password/App Password, Sender)
 
 # Copy .env.example to .env in frontend directory
 cp .env.example .env
 # Add your Stripe publishable key to .env
 # REACT_APP_STRIPE_PUBLISHABLE_KEY=<YOUR_STRIPE_PUBLISHABLE_KEY>
+# Optionally set REACT_APP_API_URL if backend isn't on localhost:5000
 
 # Return to root directory
 cd ..
@@ -63,12 +69,19 @@ cd ..
 ## RUN LOCALLY ##
 
 # Terminal 1 - Start Backend (from project root)
+# Ensure venv is active (source venv/bin/activate or activate.fish)
 cd backend
 flask run
 
 # Terminal 2 - Start Frontend (from project root)
+# Ensure venv is active (needed for node env? No, only python)
 cd frontend
 npm start
+
+# Terminal 3 (Optional) - Run Stripe CLI for Webhook Testing
+# Install: https://docs.stripe.com/stripe-cli
+# Login: stripe login
+# Forward events: stripe listen --forward-to http://localhost:5000/api/webhook
 
 ## Local vs Production Configuration ##
 
@@ -109,11 +122,25 @@ cd ..
 # If CORS errors occur:
 # - Check that backend is running on http://localhost:5000
 # - Check that frontend is running on http://localhost:3000
-# - Verify CORS configuration in backend/app.py
+# - Verify CORS configuration in backend/app.py (allows localhost:3000 and FRONTEND_URL)
 
 # If Stripe doesn't work:
 # - Verify .env files exist in both root and frontend directories
-# - Check that Stripe keys are correctly set
+# - Check that Stripe keys (Secret, Publishable) are correctly set in the root .env
+# - Check that REACT_APP_STRIPE_PUBLISHABLE_KEY is set in frontend/.env
+# - Check that STRIPE_WEBHOOK_SECRET is set in the root .env for webhook verification.
+# - If testing locally, ensure Stripe CLI is running and forwarding events correctly.
+
+# If Authentication fails:
+# - Check JWT_SECRET_KEY is set in the root .env file.
+# - Check browser console for JWT-related errors.
+# - Verify backend logs for authentication errors.
+
+# If Password Reset emails aren't sent:
+# - Check MAIL_* variables are correct in the root .env file.
+# - Ensure your email provider (e.g., Gmail) allows SMTP access.
+# - Check if 2FA requires an App Password for MAIL_PASSWORD.
+# - Check backend logs for mail sending errors.
 
 # If Tailwind styles don't appear:
 # - Restart frontend development server

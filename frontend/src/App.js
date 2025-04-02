@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import React, { useState, useEffect, useCallback } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import Navbar from './components/Navbar';
@@ -9,78 +9,250 @@ import UsageGuide from './components/UsageGuide';
 import TermsOfService from './pages/legal/TermsOfService';
 import PrivacyPolicy from './pages/legal/PrivacyPolicy';
 import RefundPolicy from './pages/legal/RefundPolicy';
+import AuthModal from './components/AuthModal';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
 // API URL - use environment variable in production or default to localhost for development
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
+// Store tokens in memory (more secure than localStorage for JWTs)
+let inMemoryTokenData = {
+  accessToken: null,
+  refreshToken: null,
+  expiry: null,
+};
+
+// Function to handle API calls with auth and token refresh
+const fetchWithAuth = async (url, options = {}) => {
+  let { accessToken, refreshToken, expiry } = inMemoryTokenData;
+
+  // Check if token is expired or close to expiring (e.g., within 1 minute)
+  if (accessToken && expiry && Date.now() >= expiry - 60 * 1000) {
+    console.log("Access token expired or expiring soon, attempting refresh...");
+    try {
+      const refreshResponse = await fetch(`${API_URL}/api/refresh`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${refreshToken}`, // Send refresh token
+        },
+      });
+      if (refreshResponse.ok) {
+        const refreshData = await refreshResponse.json();
+        accessToken = refreshData.access_token;
+        // Update in-memory store
+        inMemoryTokenData.accessToken = accessToken;
+        inMemoryTokenData.expiry = Date.now() + 14 * 60 * 1000; // Assume 14 min validity for safety
+        console.log("Token refreshed successfully.");
+      } else {
+        console.error("Failed to refresh token. Logging out.");
+        // Clear tokens if refresh fails
+        inMemoryTokenData = { accessToken: null, refreshToken: null, expiry: null };
+         // Force a page reload or state update to reflect logout might be needed here
+         window.location.reload(); // Simple way to force state reset
+         return null; // Indicate failure
+      }
+    } catch (error) {
+      console.error('Error refreshing token:', error);
+      inMemoryTokenData = { accessToken: null, refreshToken: null, expiry: null };
+      window.location.reload();
+      return null; // Indicate failure
+    }
+  }
+
+  // Add Authorization header if access token exists
+  const headers = {
+    ...options.headers,
+    'Content-Type': 'application/json', // Ensure content type is set
+  };
+  if (accessToken) {
+    headers['Authorization'] = `Bearer ${accessToken}`;
+  }
+
+  try {
+      const response = await fetch(url, { ...options, headers });
+      // Handle 401 Unauthorized specifically - could trigger logout
+      if (response.status === 401 && url !== `${API_URL}/api/refresh`) { // Avoid logout loop on refresh fail
+          console.error("Received 401 Unauthorized. Logging out.");
+          inMemoryTokenData = { accessToken: null, refreshToken: null, expiry: null };
+          window.location.reload(); // Force logout state
+          return null; // Or throw an error
+      }
+      return response;
+  } catch (error) {
+      console.error("API call failed:", error);
+      // Potentially handle network errors differently
+      throw error; // Re-throw error for caller to handle
+  }
+};
+
 function App() {
   const [previewData, setPreviewData] = useState([]);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [hasAccess, setHasAccess] = useState(false);
-  const [showRestoreModal, setShowRestoreModal] = useState(false);
-  const [restoreError, setRestoreError] = useState('');
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authMode, setAuthMode] = useState('login');
+  const [authError, setAuthError] = useState('');
+  const [authLoading, setAuthLoading] = useState(false);
+  const [currentUserEmail, setCurrentUserEmail] = useState(null);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  useEffect(() => {
-    fetchPreviewData();
-    checkAccess();
+  const fetchPreviewDataCallback = useCallback(async () => {
+    console.log("Fetching preview data. Logged in:", !!inMemoryTokenData.accessToken);
+    const url = `${API_URL}/api/preview-data`;
+    const response = await fetchWithAuth(url, { method: 'GET' });
+
+    if (response && response.ok) {
+      const data = await response.json();
+      console.log("Preview data received:", data.length, "items. Has Access:", hasAccess);
+      setPreviewData(data);
+    } else if (response) {
+      console.error("Failed to fetch preview data:", response.status, await response.text());
+    } else {
+      console.error("fetchWithAuth returned null, likely due to auth issue.");
+    }
+  }, [hasAccess]);
+
+  const checkAccessCallback = useCallback(async () => {
+    if (!!!inMemoryTokenData.accessToken) {
+      console.log("Not logged in, skipping access check.");
+      setHasAccess(false);
+      return;
+    }
+
+    console.log("Checking access for logged in user...");
+    const response = await fetchWithAuth(`${API_URL}/api/verify-access`, { method: 'POST' });
+
+    if (response && response.ok) {
+      const data = await response.json();
+      console.log("Access check response:", data);
+      setHasAccess(data.hasAccess);
+    } else if (response) {
+      console.error("Failed to verify access:", response.status, await response.text());
+      setHasAccess(false);
+    } else {
+      console.error("fetchWithAuth returned null during access check.");
+      setHasAccess(false);
+    }
   }, []);
 
-  const fetchPreviewData = async () => {
-    const email = localStorage.getItem('userEmail');
-    const url = email 
-      ? `${API_URL}/api/preview-data?email=${encodeURIComponent(email)}`
-      : `${API_URL}/api/preview-data`;
-      
-    const response = await fetch(url);
-    const data = await response.json();
-    setPreviewData(data);
-  };
-
-  const checkAccess = async () => {
-    const email = localStorage.getItem('userEmail');
-    if (!email) return;
-
-    const response = await fetch(`${API_URL}/api/verify-access`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email }),
+  useEffect(() => {
+    checkAccessCallback().then(() => {
+      fetchPreviewDataCallback();
     });
-    const data = await response.json();
-    setHasAccess(data.hasAccess);
-  };
+  }, [checkAccessCallback, fetchPreviewDataCallback]);
 
-  const handleRestore = async (email) => {
-    const response = await fetch(`${API_URL}/api/verify-access`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email }),
-    });
-    const data = await response.json();
-    if (data.hasAccess) {
-      localStorage.setItem('userEmail', email);
-      setHasAccess(true);
-      setShowRestoreModal(false);
-      setRestoreError('');
-      fetchPreviewData();
-    } else {
-      setRestoreError('This email is not registered. Please check your email or purchase access.');
+  const handleLogin = async (email, password) => {
+    setAuthLoading(true);
+    setAuthError('');
+    try {
+      const response = await fetch(`${API_URL}/api/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        inMemoryTokenData.accessToken = data.access_token;
+        inMemoryTokenData.refreshToken = data.refresh_token;
+        inMemoryTokenData.expiry = Date.now() + 15 * 60 * 1000;
+
+        setCurrentUserEmail(email);
+        setHasAccess(true);
+        setShowAuthModal(false);
+        await checkAccessCallback();
+        await fetchPreviewDataCallback();
+      } else {
+        setAuthError(data.message || 'Login failed.');
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      setAuthError('An error occurred during login.');
     }
+    setAuthLoading(false);
   };
 
-  const handlePaymentSuccess = () => {
-    setHasAccess(true);
+  const handleRegister = async (email, password) => {
+    setAuthLoading(true);
+    setAuthError('');
+    try {
+      const response = await fetch(`${API_URL}/api/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setAuthMode('login');
+        setAuthError('');
+        alert("Registration successful! Please log in to continue.");
+      } else {
+        setAuthError(data.message || 'Registration failed.');
+      }
+    } catch (error) {
+      console.error("Registration error:", error);
+      setAuthError('An error occurred during registration.');
+    }
+    setAuthLoading(false);
+  };
+
+  const handleForgotPassword = async (email) => {
+    setAuthLoading(true);
+    setAuthError('');
+    try {
+      const response = await fetch(`${API_URL}/api/forgot-password`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        alert(data.message);
+        setAuthMode('login');
+      } else {
+        setAuthError(data.message || 'Password reset request failed.');
+      }
+    } catch (error) {
+      console.error("Forgot password error:", error);
+      setAuthError('An error occurred requesting password reset.');
+    }
+    setAuthLoading(false);
+  };
+
+  const handleLogout = () => {
+    inMemoryTokenData = { accessToken: null, refreshToken: null, expiry: null };
+    setHasAccess(false);
+    setCurrentUserEmail(null);
+    fetchPreviewDataCallback();
+    console.log("User logged out.");
+  };
+
+  const openAuthModal = (mode = 'login') => {
+    setAuthMode(mode);
+    setAuthError('');
+    setShowAuthModal(true);
+  };
+
+  const handlePaymentSuccess = async () => {
+    console.log("Payment & Auto-Login sequence completed for user:", currentUserEmail);
     setShowPaymentModal(false);
-    fetchPreviewData();
+    await checkAccessCallback();
+    await fetchPreviewDataCallback();
+  };
+
+  const handleGetAccessClick = () => {
+    setShowPaymentModal(true);
+  };
+
+  // New handler to switch from AuthModal (login mode) to PaymentModal
+  const handleSwitchToPayment = () => {
+      setShowAuthModal(false); // Close Auth Modal
+      setShowPaymentModal(true); // Open Payment Modal
   };
 
   return (
@@ -93,14 +265,28 @@ function App() {
                 SaaS Insight Engine
               </Link>
               <div className="flex items-center gap-8">
+                {!!!inMemoryTokenData.accessToken ? (
+                  <button
+                    onClick={() => openAuthModal('login')}
+                    className="bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-600 px-6 py-2 rounded-lg hover:from-blue-100 hover:to-indigo-100 transition-all font-medium border border-blue-200 shadow-sm"
+                  >
+                    Restore Access
+                  </button>
+                ) : (
+                  <div className="flex items-center gap-4">
+                    <span className="text-base font-medium text-gray-700">
+                        Welcome, <span className="font-semibold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-600">{currentUserEmail}</span>!
+                    </span>
+                    <button
+                      onClick={handleLogout}
+                      className="bg-red-50 text-red-700 px-4 py-1.5 rounded-lg text-sm font-medium hover:bg-red-100 transition-colors border border-red-200 shadow-sm"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
                 <button
-                  onClick={() => setShowRestoreModal(true)}
-                  className="bg-gradient-to-r from-blue-50 to-indigo-50 text-blue-600 px-6 py-2 rounded-lg hover:from-blue-100 hover:to-indigo-100 transition-all font-medium border border-blue-200 shadow-sm"
-                >
-                  Restore Access
-                </button>
-                <button
-                  onClick={() => setShowPaymentModal(true)}
+                  onClick={handleGetAccessClick}
                   className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white px-8 py-2.5 rounded-lg hover:opacity-90 transition-all font-medium shadow-md text-base"
                 >
                   Get Access
@@ -139,6 +325,7 @@ function App() {
             </div>
           </div>
           <Routes>
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
             <Route path="/legal/terms" element={<TermsOfService />} />
             <Route path="/legal/privacy" element={<PrivacyPolicy />} />
             <Route path="/legal/refund" element={<RefundPolicy />} />
@@ -180,14 +367,15 @@ function App() {
                       </div>
                     </div>
                   )}
-        </div>
+                </div>
                 <div className="lg:col-span-2 flex flex-col">
                   <div className="flex-1">
-        <DataTable 
-          data={previewData} 
-          hasAccess={hasAccess} 
-          onGetAccess={() => setShowPaymentModal(true)} 
-        />
+                    <DataTable
+                      data={previewData}
+                      hasAccess={hasAccess}
+                      isLoggedIn={!!inMemoryTokenData.accessToken}
+                      onGetAccess={handleGetAccessClick}
+                    />
                   </div>
                   <div className="bg-gradient-to-br from-violet-50 via-purple-50 to-fuchsia-50 rounded-lg shadow-sm p-6 border border-violet-200 hover:shadow-md transition-shadow mt-8">
                     <div className="flex items-center gap-8">
@@ -277,51 +465,23 @@ function App() {
             <PaymentModal
               onClose={() => setShowPaymentModal(false)}
               onSuccess={handlePaymentSuccess}
+              onLogin={handleLogin}
             />
           </Elements>
         )}
 
-        {showRestoreModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-            <div className="bg-white p-8 rounded-lg max-w-md w-full">
-              <h2 className="text-2xl font-bold mb-4">Restore Access</h2>
-              <form onSubmit={(e) => {
-                e.preventDefault();
-                handleRestore(e.target.email.value);
-              }}>
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Enter your email"
-                  className="w-full p-2 border rounded mb-4"
-                  required
-                />
-                {restoreError && (
-                  <div className="text-red-600 text-sm mb-4">
-                    {restoreError}
-                  </div>
-                )}
-                <div className="flex justify-end gap-4">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setShowRestoreModal(false);
-                      setRestoreError('');
-                    }}
-                    className="px-6 py-2.5 text-gray-600 hover:text-gray-800 font-medium"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white px-8 py-2.5 rounded-lg hover:opacity-90 transition-all font-medium shadow-md"
-                  >
-                    Restore
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
+        {showAuthModal && (
+          <AuthModal
+            mode={authMode}
+            onClose={() => setShowAuthModal(false)}
+            onLogin={handleLogin}
+            onRegister={handleRegister}
+            onForgotPassword={handleForgotPassword}
+            setMode={setAuthMode}
+            error={authError}
+            loading={authLoading}
+            onSwitchToPayment={handleSwitchToPayment}
+          />
         )}
     </div>
     </Router>
