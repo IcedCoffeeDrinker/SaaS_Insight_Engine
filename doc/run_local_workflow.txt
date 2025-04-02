@@ -136,10 +136,11 @@ cd ..
 # - Check browser console for JWT-related errors.
 # - Verify backend logs for authentication errors.
 
-# If Password Reset emails aren't sent:
+# If Password Reset emails aren't sent or link is wrong:
 # - Check MAIL_* variables are correct in the root .env file.
 # - Ensure your email provider (e.g., Gmail) allows SMTP access.
 # - Check if 2FA requires an App Password for MAIL_PASSWORD.
+# - Verify the password reset link in the email points to the correct frontend URL (http://localhost:3000 for local dev, your production URL otherwise). The backend uses FLASK_ENV=development to determine the local URL automatically.
 # - Check backend logs for mail sending errors.
 
 # If Tailwind styles don't appear:

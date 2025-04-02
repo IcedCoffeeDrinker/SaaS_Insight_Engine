@@ -47,9 +47,18 @@ limiter = Limiter(
 # Configure CORS - update for production
 # For local development: http://localhost:3000
 # For production: get from env var or default to Render URL
-frontend_url = os.getenv('FRONTEND_URL', 'https://saas-insight-frontend.onrender.com')
+
+# Determine frontend URL based on environment
+if os.getenv('FLASK_ENV') == 'development':
+    frontend_url = 'http://localhost:3000'
+else:
+    # Use FRONTEND_URL from env var, defaulting to Render URL for production
+    frontend_url = os.getenv('FRONTEND_URL', 'https://saas-insight-frontend.onrender.com')
+
+print(f"INFO: Using frontend_url: {frontend_url}") # Add log to see which URL is used
+
 additional_origins = os.getenv('ADDITIONAL_CORS_ORIGINS', '')
-allowed_origins = [frontend_url, "http://localhost:3000"]
+allowed_origins = [frontend_url, "http://localhost:3000"] # Always allow localhost:3000 for local dev even if FRONTEND_URL is set
 
 # Add any additional origins if they exist
 if additional_origins:
