@@ -118,12 +118,21 @@ def initialize_data_files():
         with open(repo_ideas_path, 'r') as src, open(persistent_ideas_path, 'w') as dst:
             dst.write(src.read())
             
-    # Copy CSV file if it doesn't exist
+    # Copy main CSV file if it doesn't exist
     repo_csv_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data', 'csv', 'SaaS_Niche_opportunities.csv')
     persistent_csv_path = os.path.join(DATA_DIR, 'csv', 'SaaS_Niche_opportunities.csv')
     
     if not os.path.exists(persistent_csv_path) and os.path.exists(repo_csv_path):
         with open(repo_csv_path, 'r') as src, open(persistent_csv_path, 'w') as dst:
+            dst.write(src.read())
+    
+    # Copy example CSV file if it doesn't exist
+    repo_example_csv_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data', 'csv', 'SaaS_Niche_opportunities_Example.csv')
+    persistent_example_csv_path = os.path.join(DATA_DIR, 'csv', 'SaaS_Niche_opportunities_Example.csv')
+    
+    if not os.path.exists(persistent_example_csv_path) and os.path.exists(repo_example_csv_path):
+        print(f"Copying example CSV file from {repo_example_csv_path} to {persistent_example_csv_path}")
+        with open(repo_example_csv_path, 'r') as src, open(persistent_example_csv_path, 'w') as dst:
             dst.write(src.read())
             
     # Initialize users.json if needed
