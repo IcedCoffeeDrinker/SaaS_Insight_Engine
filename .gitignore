@@ -220,12 +220,11 @@ frontend/.env.production.local
 .idea/
 
 # Data files
-data/users.json
-data/SaaS_ideas.json
-data/SaaS_ideas.*.json
-data/csv/*.csv
-data/*.json
-!data/SaaS_ideas.json.example
+data/users.json           # Ignore the actual user data
+data/SaaS_ideas.json      # Ignore the main SaaS ideas data
+# Ignore the main CSV, but keep the example tracked
+data/csv/SaaS_Niche_opportunities.csv
+!data/csv/SaaS_Niche_opportunities_Example.csv
 
 # OS specific
 .DS_Store
@@ -256,7 +255,7 @@ google_ads_credentials.json
 jupyter-391421-*.json
 
 # API credentials
-*.json
+# *.json # This was too broad, ignoring package.json etc.
 !package.json
 !package-lock.json
 
@@ -264,6 +263,6 @@ jupyter-391421-*.json
 message_composer.md
 
 # Ignore saas-engine rules file
-saas-engine-rules.mdc
+# saas-engine-rules.mdc # Keep rules tracked usually
 
 

@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 // API URL - use environment variable in production or default to localhost for development
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
-function DataTable({ data, hasAccess, onGetAccess }) {
+function DataTable({ data, hasAccess, onGetAccess, isLoggedIn, fetchPreviewDataCallback }) {
   const [descriptions, setDescriptions] = useState({});
   const [hoveredRow, setHoveredRow] = useState(null);
   const [jsonData, setJsonData] = useState([]);
@@ -17,11 +17,33 @@ function DataTable({ data, hasAccess, onGetAccess }) {
     ? data.slice(currentPage * entriesPerPage, (currentPage + 1) * entriesPerPage)
     : data.slice(0, 8); // Always show first 8 for non-paying users
 
-  // Fetch the JSON data when component mounts
+  // Fetch the JSON data when component mounts AND user has access
   useEffect(() => {
     const fetchJsonData = async () => {
+      if (!hasAccess || !isLoggedIn) {
+        // Skip API call if user doesn't have access or is not logged in
+        console.log("Skipping saas-ideas fetch - user does not have access or is not logged in");
+        return;
+      }
+      
       try {
-        const response = await fetch(`${API_URL}/api/saas-ideas`);
+        console.log("Fetching saas-ideas - user has access and is logged in");
+        // Use token from localStorage for authentication
+        const accessToken = localStorage.getItem('accessToken');
+        if (!accessToken) {
+          console.log("No access token found, skipping fetch");
+          return;
+        }
+        
+        const response = await fetch(`${API_URL}/api/saas-ideas`, {
+          headers: {
+            'Authorization': `Bearer ${accessToken}`
+          }
+        });
+        
+        if (!response.ok) {
+          throw new Error(`API returned ${response.status}`);
+        }
         const data = await response.json();
         setJsonData(data);
       } catch (error) {
@@ -30,7 +52,7 @@ function DataTable({ data, hasAccess, onGetAccess }) {
     };
 
     fetchJsonData();
-  }, []);
+  }, [hasAccess, isLoggedIn]); // Re-run if hasAccess or isLoggedIn changes
 
   // Handle mouse enter with delay
   const handleMouseEnter = (index, title) => {
@@ -75,6 +97,17 @@ function DataTable({ data, hasAccess, onGetAccess }) {
   const goToPreviousPage = () => {
     if (currentPage > 0) {
       setCurrentPage(currentPage - 1);
+    }
+  };
+
+  // Handle get access click with data refresh
+  const handleGetAccessClick = () => {
+    // Call the onGetAccess callback to show payment modal
+    onGetAccess();
+    
+    // If a fetchPreviewDataCallback is provided, call it to ensure data is refreshed
+    if (fetchPreviewDataCallback) {
+      fetchPreviewDataCallback();
     }
   };
 
@@ -217,7 +250,7 @@ function DataTable({ data, hasAccess, onGetAccess }) {
       {!hasAccess && (
         <div className="flex flex-col items-center gap-2">
           <button
-            onClick={onGetAccess}
+            onClick={handleGetAccessClick}
             className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 text-white px-8 py-2.5 rounded-lg hover:opacity-90 transition-all font-medium shadow-md text-base"
           >
             Get Full Access Now

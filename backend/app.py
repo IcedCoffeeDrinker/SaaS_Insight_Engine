@@ -270,12 +270,21 @@ def prepare_payment():
 def verify_access():
     # This endpoint now verifies the JWT token is valid and the user has access
     current_user_email = get_jwt_identity()
+    print(f"VERIFY_ACCESS: Checking access for JWT identity: {current_user_email}") # Log identity
     user = find_user_by_email(current_user_email)
 
-    if user and user.get('access', False):
-        return jsonify({"hasAccess": True})
+    if user:
+        user_access = user.get('access', False)
+        print(f"VERIFY_ACCESS: User '{current_user_email}' found. Access status from users.json: {user_access}") # Log user found and access status
+        if user_access:
+            print(f"VERIFY_ACCESS: Returning hasAccess: True for {current_user_email}")
+            return jsonify({"hasAccess": True})
+        else:
+            print(f"VERIFY_ACCESS: Returning hasAccess: False for {current_user_email} (access flag is false)")
+            return jsonify({"hasAccess": False})
     else:
-        # User might be authenticated but not have paid access yet
+        # User might be authenticated (valid JWT) but somehow not in users.json (shouldn't happen ideally)
+        print(f"VERIFY_ACCESS: ERROR - User '{current_user_email}' with valid JWT not found in users.json. Returning hasAccess: False")
         return jsonify({"hasAccess": False})
 
 # --- Other API Routes ---
@@ -287,55 +296,93 @@ def health_check():
 
 # Routes
 @app.route('/api/preview-data')
+@jwt_required(optional=True)  # Moved decorator here, allows request even without JWT
 def get_preview_data():
-    # This needs protection later
-    file_path = os.path.join(DATA_DIR, 'csv', 'SaaS_Niche_opportunities.csv')
-
-    # Check if user has access - Temporarily keep email check for preview
-    # TODO: Replace with JWT check later for full data access
-    email = request.args.get('email') # Keep this for now for backward compat/preview logic
     has_access = False
-    user = None
-    if email:
-        user = find_user_by_email(email)
-        if user:
-            has_access = user.get('access', False)
-
-    # Try to get identity from JWT if available for full access check
+    jwt_identity = None
     try:
-        # This is a temporary check - ideally this route is fully protected
-        jwt_identity = get_jwt_identity() if request.headers.get('Authorization') else None
+        # Check for a valid JWT and get the identity
+        jwt_identity = get_jwt_identity()
         if jwt_identity:
-             jwt_user = find_user_by_email(jwt_identity)
-             if jwt_user:
-                 has_access = jwt_user.get('access', False)
-    except Exception:
-         # Ignore if no valid JWT is present
-         pass
+            user = find_user_by_email(jwt_identity)
+            if user and user.get('access', False):
+                has_access = True
+                print(f"PREVIEW_DATA: Access TRUE for user {jwt_identity}")
+            else:
+                print(f"PREVIEW_DATA: Access FALSE for user {jwt_identity}")
+        else:
+            print("PREVIEW_DATA: No JWT identity found, access FALSE")
+
+    except Exception as e:
+         # Handle potential errors during JWT processing if needed, default to no access
+         print(f"PREVIEW_DATA: Error during JWT check: {e}, access FALSE")
+         has_access = False
+
+    # Determine which file to load
+    if has_access:
+        file_path = os.path.join(DATA_DIR, 'csv', 'SaaS_Niche_opportunities.csv')
+        print("PREVIEW_DATA: Loading full data file.")
+    else:
+        # Load the smaller example/preview file if no access
+        file_path = os.path.join(DATA_DIR, 'csv', 'SaaS_Niche_opportunities_Example.csv')
+        print("PREVIEW_DATA: Loading preview (example) data file.")
+
+    # Get the total count of ideas from the full SaaS_ideas.json file
+    total_ideas_count = 0
+    try:
+        ideas_file_path = os.path.join(DATA_DIR, 'SaaS_ideas.json')
+        if os.path.exists(ideas_file_path):
+            with open(ideas_file_path, 'r') as ideas_file:
+                ideas_data = json.load(ideas_file)
+                total_ideas_count = len(ideas_data)
+    except Exception as e:
+        print(f"Error counting ideas from SaaS_ideas.json: {e}")
 
     try:
-        with open(file_path, 'r', encoding='utf-8') as f: # Specify encoding
+        with open(file_path, 'r', encoding='utf-8') as f:
             csv_reader = csv.DictReader(f)
             data = list(csv_reader)
-
-            # If user has access, return all data
-            if has_access:
-                return jsonify(data)
-            # Otherwise return only preview data
-            return jsonify(data[:8])  # Get first 8 entries
+            # Return both the data and the count
+            return jsonify({
+                "data": data,
+                "totalIdeasCount": total_ideas_count
+            })
     except FileNotFoundError:
-        return jsonify({"error": "Data file not found"}), 404
+        print(f"PREVIEW_DATA: Error - Data file not found at {file_path}")
+        # Return empty list or specific error if preview file missing?
+        # If the *main* file is missing, maybe a 500 is better.
+        if not has_access and not os.path.exists(file_path):
+            print("PREVIEW_DATA: Preview file missing, returning empty list.")
+            return jsonify({"data": [], "totalIdeasCount": total_ideas_count}) # Return empty for missing preview
+        else:
+             return jsonify({"error": "Data file not found"}), 404
     except Exception as e:
-        print(f"Error reading preview data: {e}")
+        print(f"Error reading data from {file_path}: {e}")
         return jsonify({"error": "Could not read data"}), 500
 
 @app.route('/api/saas-ideas')
-# @jwt_required() # TODO: Decide if this needs protection
+@jwt_required() # Protect this endpoint
 def get_saas_ideas():
+    # Verify access based on JWT
+    current_user_email = get_jwt_identity()
+    user = find_user_by_email(current_user_email)
+
+    if not user or not user.get('access', False):
+        print(f"SAAS_IDEAS: Access denied for user {current_user_email}")
+        return jsonify({"message": "Access required"}), 403 # Forbidden
+
+    print(f"SAAS_IDEAS: Access granted for user {current_user_email}")
     file_path = os.path.join(DATA_DIR, 'SaaS_ideas.json')
-    with open(file_path, 'r') as f:
-        saas_ideas = json.load(f)
-    return jsonify(saas_ideas)
+    try:
+        with open(file_path, 'r') as f:
+            saas_ideas = json.load(f)
+        return jsonify(saas_ideas)
+    except FileNotFoundError:
+        print(f"SAAS_IDEAS: Error - Ideas file not found at {file_path}")
+        return jsonify({"error": "Ideas data file not found"}), 404
+    except Exception as e:
+        print(f"Error reading ideas data from {file_path}: {e}")
+        return jsonify({"error": "Could not read ideas data"}), 500
 
 # --- Password Reset ---
 def send_password_reset_email(user_email, token):
